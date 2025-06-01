@@ -19,6 +19,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      flex-wrap: wrap;
     }
     header h1 {
       margin: 0;
@@ -30,6 +31,34 @@
       text-decoration: none;
       font-weight: bold;
     }
+
+    .controls {
+      padding: 1rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      background-color: #111;
+    }
+    .filters button, .controls input {
+      padding: 0.5rem 1rem;
+      background-color: #222;
+      border: none;
+      color: #fff;
+      border-radius: 5px;
+      font-size: 1rem;
+      transition: background-color 0.3s ease;
+    }
+    .filters button:hover,
+    .filters button.active {
+      background-color: #00adee;
+      cursor: pointer;
+    }
+    .controls input {
+      border: 1px solid #444;
+      width: 220px;
+    }
+
     .content {
       padding: 2rem;
     }
@@ -91,6 +120,14 @@
     .copy-btn:hover {
       background-color: #555;
     }
+    .favorite-btn {
+      background-color: transparent;
+      border: none;
+      color: gold;
+      font-size: 1.2rem;
+      cursor: pointer;
+      margin-top: 8px;
+    }
     @media (max-width: 768px) {
       .level {
         flex-direction: column;
@@ -102,84 +139,126 @@
       }
     }
     @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
 <body>
   <header>
     <h1>Demon List GDPS</h1>
-    <nav>
-      <a href="#">Inicio</a>
-    </nav>
+    <nav><a href="#">Inicio</a></nav>
   </header>
-  <div class="content" id="levels">
-    <!-- Categorías y niveles se cargarán aquí -->
+
+  <div class="controls">
+    <div class="filters" id="filterButtons">
+      <button data-filter="all" class="active">Todos</button>
+      <button data-filter="Easy Demon">Easy</button>
+      <button data-filter="Medium Demon">Medium</button>
+      <button data-filter="Hard Demon">Hard</button>
+      <button data-filter="Insane Demon">Insane</button>
+      <button data-filter="Extreme Demon">Extreme</button>
+      <button data-filter="favorites">⭐ Favoritos</button>
+    </div>
+    <input type="text" id="searchInput" placeholder="Buscar nivel o autor...">
   </div>
+
+  <div class="content" id="levels"></div>
+
   <script>
+    let allLevels = [];
+    let favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+
     fetch('levels.json')
       .then(response => response.json())
-      .then(levelsData => {
-        // Ordenar por dificultad de mayor a menor
-        levelsData.sort((a, b) => b.difficulty - a.difficulty);
-
-        const categories = ["Extreme Demon", "Insane Demon", "Hard Demon", "Medium Demon", "Easy Demon"];
-        const container = document.getElementById("levels");
-
-        categories.forEach(category => {
-          const categoryDiv = document.createElement("div");
-          categoryDiv.className = "category";
-          categoryDiv.innerHTML = `<h2>${category}</h2>`;
-
-          const levelsInCategory = levelsData.filter(l => l.category === category);
-
-          levelsInCategory.forEach((level, index) => {
-            const levelDiv = document.createElement("div");
-            levelDiv.className = "level";
-            levelDiv.style.animationDelay = `${index * 0.1}s`;
-
-            const isLink = level.song.startsWith("http");
-            const songHTML = isLink
-              ? `<a href="${level.song}" target="_blank" style="color: #00adee;">Escuchar canción</a>`
-              : `${level.song} <button class="copy-btn" onclick="copyToClipboard('${level.song}')">Copiar ID</button>`;
-
-            levelDiv.innerHTML = `
-              <div class="level-info">
-                <h3>${level.name}</h3>
-                <p><strong>Autor:</strong> ${level.author}</p>
-                <p><strong>ID del nivel:</strong> ${level.id} <button class="copy-btn" onclick="copyToClipboard('${level.id}')">Copiar</button></p>
-                <p><strong>Contraseña:</strong> ${level.pass}</p>
-                <p><strong>Canción:</strong> ${songHTML}</p>
-              </div>
-              <div class="level-thumbnail">
-                <img src="${level.thumbnail}" alt="Miniatura de ${level.name}">
-              </div>
-            `;
-            categoryDiv.appendChild(levelDiv);
-          });
-
-          container.appendChild(categoryDiv);
-        });
-      })
-      .catch(error => {
-        console.error("Error al cargar los niveles:", error);
-        document.getElementById("levels").innerText = "Error al cargar los niveles.";
+      .then(data => {
+        allLevels = data.sort((a, b) => b.difficulty - a.difficulty);
+        renderLevels("all");
       });
+
+    function renderLevels(filter, searchTerm = "") {
+      const container = document.getElementById("levels");
+      container.innerHTML = "";
+
+      const categories = ["Extreme Demon", "Insane Demon", "Hard Demon", "Medium Demon", "Easy Demon"];
+      const visibleLevels = allLevels.filter(level => {
+        const matchCategory = filter === "all" || filter === level.category || (filter === "favorites" && favorites.includes(level.id));
+        const matchSearch = level.name.toLowerCase().includes(searchTerm) || level.author.toLowerCase().includes(searchTerm);
+        return matchCategory && matchSearch;
+      });
+
+      const levelsByCategory = {};
+      visibleLevels.forEach(level => {
+        if (!levelsByCategory[level.category]) levelsByCategory[level.category] = [];
+        levelsByCategory[level.category].push(level);
+      });
+
+      for (const category of categories) {
+        if (!levelsByCategory[category]) continue;
+        const section = document.createElement("div");
+        section.className = "category";
+        section.innerHTML = `<h2>${category}</h2>`;
+        levelsByCategory[category].forEach((level, index) => {
+          const div = document.createElement("div");
+          div.className = "level";
+          div.style.animationDelay = `${index * 0.1}s`;
+
+          const isLink = level.song.startsWith("http");
+          const songHTML = isLink
+            ? `<a href="${level.song}" target="_blank" style="color: #00adee;">Escuchar canción</a>`
+            : `${level.song} <button class="copy-btn" onclick="copyToClipboard('${level.song}')">Copiar ID</button>`;
+
+          const favText = favorites.includes(level.id) ? "⭐ Quitar de favoritos" : "☆ Añadir a favoritos";
+
+          div.innerHTML = `
+            <div class="level-info">
+              <h3>${level.name}</h3>
+              <p><strong>Autor:</strong> ${level.author}</p>
+              <p><strong>ID:</strong> ${level.id} <button class="copy-btn" onclick="copyToClipboard('${level.id}')">Copiar</button></p>
+              <p><strong>Contraseña:</strong> ${level.pass}</p>
+              <p><strong>Canción:</strong> ${songHTML}</p>
+              <button class="favorite-btn" onclick="toggleFavorite('${level.id}', this)">${favText}</button>
+            </div>
+            <div class="level-thumbnail">
+              <img src="${level.thumbnail}" alt="${level.name}">
+            </div>
+          `;
+          section.appendChild(div);
+        });
+        container.appendChild(section);
+      }
+    }
 
     function copyToClipboard(text) {
-      navigator.clipboard.writeText(text).then(() => {
-        alert("Copiado: " + text);
-      }).catch(err => {
-        console.error('Error al copiar: ', err);
-      });
+      navigator.clipboard.writeText(text).then(() => alert("Copiado: " + text));
     }
+
+    function toggleFavorite(id, btn) {
+      if (favorites.includes(id)) {
+        favorites = favorites.filter(f => f !== id);
+        btn.innerText = "☆ Añadir a favoritos";
+      } else {
+        favorites.push(id);
+        btn.innerText = "⭐ Quitar de favoritos";
+      }
+      localStorage.setItem("favorites", JSON.stringify(favorites));
+    }
+
+    document.querySelectorAll("#filterButtons button").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll("#filterButtons button").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        const filter = btn.getAttribute("data-filter");
+        const term = document.getElementById("searchInput").value.toLowerCase();
+        renderLevels(filter, term);
+      });
+    });
+
+    document.getElementById("searchInput").addEventListener("input", e => {
+      const searchTerm = e.target.value.toLowerCase();
+      const activeFilter = document.querySelector("#filterButtons .active").getAttribute("data-filter");
+      renderLevels(activeFilter, searchTerm);
+    });
   </script>
 </body>
 </html>
