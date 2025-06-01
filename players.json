@@ -1,22 +1,27 @@
 [
   {
     "name": "PlayerOne",
-    "score": 100
+    "score": 100,
+    "levels": ["Tartarus", "Acheron", "Deadlocked"]
   },
   {
     "name": "PlayerTwo",
-    "score": 75
+    "score": 75,
+    "levels": ["Acheron", "Deadlocked"]
   },
   {
     "name": "PlayerThree",
-    "score": 50
+    "score": 50,
+    "levels": ["Deadlocked"]
   },
   {
     "name": "PlayerFour",
-    "score": 25
+    "score": 25,
+    "levels": []
   },
   {
     "name": "PlayerFive",
-    "score": 10
+    "score": 10,
+    "levels": ["Tartarus"]
   }
 ]
