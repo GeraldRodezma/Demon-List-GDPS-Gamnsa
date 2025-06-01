@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Demon List - Blanco y Negro</title>
+<title>Demon List - Detalle Jugadores desde JSON</title>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet" />
 <style>
   body {
@@ -42,6 +42,7 @@
     font-weight: 600;
     box-shadow: 0 0 8px #ffffff33;
     transition: background 0.3s ease;
+    cursor: pointer;
   }
 
   .player:hover {
@@ -49,141 +50,129 @@
     box-shadow: 0 0 12px #ffffff88;
   }
 
-  a.button {
-    display: inline-block;
-    padding: 12px 28px;
-    border: 2px solid #ffffffcc;
-    border-radius: 30px;
-    color: #ffffffcc;
-    text-decoration: none;
-    font-weight: 700;
-    font-size: 1.1rem;
-    transition: all 0.3s ease;
-    box-shadow: 0 0 10px #ffffff55;
+  /* Modal Styles */
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.75);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
   }
 
-  a.button:hover {
-    background: #ffffffcc;
-    color: #000000;
-    box-shadow: 0 0 20px #ffffffcc;
+  .modal {
+    background: #111;
+    border-radius: 12px;
+    padding: 20px;
+    max-width: 400px;
+    width: 90%;
+    box-shadow: 0 0 20px #fff;
+    color: #fff;
+    position: relative;
   }
 
-  .levels {
-    display: grid;
-    grid-template-columns: repeat(auto-fit,minmax(280px,1fr));
-    gap: 1.5rem;
-    width: 100%;
-    max-width: 900px;
+  .modal h2 {
+    margin-top: 0;
+    color: #fff;
+    text-shadow: 0 0 8px #fff;
   }
 
-  .card {
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 16px;
-    box-shadow: 0 0 15px #ffffff44;
-    overflow: hidden;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-  }
-
-  .card:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 25px #ffffffbb;
-  }
-
-  .card img {
-    width: 100%;
-    display: block;
-  }
-
-  .card-content {
-    padding: 1rem 1.2rem;
-  }
-
-  .card-title {
+  .modal .close-btn {
+    position: absolute;
+    top: 12px;
+    right: 16px;
     font-size: 1.5rem;
-    font-weight: 700;
-    color: #ffffff;
-    margin: 0 0 0.3rem 0;
-    text-shadow: 0 0 6px #ffffffcc;
+    color: #fff;
+    cursor: pointer;
   }
 
-  .card-subtitle {
-    font-size: 0.9rem;
-    color: #ccccccaa;
-    margin-bottom: 0.8rem;
+  .modal ul {
+    padding-left: 20px;
   }
 
-  .card a {
-    display: inline-block;
-    padding: 8px 16px;
-    background: transparent;
-    border: 1.5px solid #ffffffcc;
-    border-radius: 9999px;
-    color: #ffffffcc;
-    text-decoration: none;
-    font-weight: 600;
-    transition: all 0.3s ease;
-    box-shadow: 0 0 8px #ffffff55;
-  }
-
-  .card a:hover {
-    background: #ffffffcc;
-    color: #000000;
-    box-shadow: 0 0 20px #ffffffcc;
+  .modal ul li {
+    margin-bottom: 6px;
   }
 </style>
 </head>
 <body>
 
-  <h1>🔥 Demon List - Top 5 con Puntos</h1>
+  <h1>🔥 Demon List - Jugadores y Detalles</h1>
 
   <div class="players-list" id="players-list">
-    <!-- Aquí se cargarán los jugadores -->
+    <!-- Lista cargada aquí -->
   </div>
 
-  <div class="text-center" style="margin-bottom: 2rem;">
-    <a href="https://docs.google.com/forms/d/e/FORM_ID/viewform" target="_blank" class="button">
-      Solicitar añadir jugador
-    </a>
-  </div>
-
-  <div class="levels">
-    <div class="card">
-      <img src="https://img.youtube.com/vi/3gT1I9GHt_4/hqdefault.jpg" alt="Tartarus" />
-      <div class="card-content">
-        <h2 class="card-title">#1 Tartarus</h2>
-        <p class="card-subtitle">por Riot</p>
-        <a href="https://www.youtube.com/watch?v=3gT1I9GHt_4" target="_blank">🎬 Ver video</a>
-      </div>
-    </div>
-
-    <div class="card">
-      <img src="https://img.youtube.com/vi/oEfP1Zq6W5k/hqdefault.jpg" alt="Acheron" />
-      <div class="card-content">
-        <h2 class="card-title">#2 Acheron</h2>
-        <p class="card-subtitle">por Ryamu</p>
-        <a href="https://www.youtube.com/watch?v=oEfP1Zq6W5k" target="_blank">🎬 Ver video</a>
-      </div>
+  <!-- Modal -->
+  <div class="modal-overlay" id="modal-overlay">
+    <div class="modal" id="modal">
+      <span class="close-btn" id="modal-close">&times;</span>
+      <h2 id="modal-player-name"></h2>
+      <p><strong>Puntos:</strong> <span id="modal-player-score"></span></p>
+      <p><strong>Niveles completados:</strong></p>
+      <ul id="modal-player-levels"></ul>
     </div>
   </div>
 
-  <script>
-    fetch('players.json')
-      .then(r => r.json())
-      .then(players => {
-        const container = document.getElementById('players-list');
-        players.forEach(p => {
-          const div = document.createElement('div');
-          div.className = 'player';
-          div.textContent = `${p.name}: ${p.score} puntos`;
-          container.appendChild(div);
-        });
-      })
-      .catch(e => {
-        const container = document.getElementById('players-list');
-        container.textContent = 'Error cargando jugadores.';
-        console.error(e);
+<script>
+  const container = document.getElementById('players-list');
+  const modalOverlay = document.getElementById('modal-overlay');
+  const modalPlayerName = document.getElementById('modal-player-name');
+  const modalPlayerScore = document.getElementById('modal-player-score');
+  const modalPlayerLevels = document.getElementById('modal-player-levels');
+  const modalClose = document.getElementById('modal-close');
+
+  // Cargar jugadores desde players.json
+  fetch('players.json')
+    .then(response => response.json())
+    .then(players => {
+      players.forEach(player => {
+        const div = document.createElement('div');
+        div.className = 'player';
+        div.textContent = `${player.name}: ${player.score} puntos`;
+        div.addEventListener('click', () => showModal(player));
+        container.appendChild(div);
       });
-  </script>
+    })
+    .catch(err => {
+      container.textContent = 'Error cargando jugadores.';
+      console.error(err);
+    });
+
+  function showModal(player) {
+    modalPlayerName.textContent = player.name;
+    modalPlayerScore.textContent = player.score;
+
+    modalPlayerLevels.innerHTML = '';
+    if (!player.levels || player.levels.length === 0) {
+      const li = document.createElement('li');
+      li.textContent = 'Ningún nivel completado aún.';
+      modalPlayerLevels.appendChild(li);
+    } else {
+      player.levels.forEach(level => {
+        const li = document.createElement('li');
+        li.textContent = level;
+        modalPlayerLevels.appendChild(li);
+      });
+    }
+
+    modalOverlay.style.display = 'flex';
+  }
+
+  modalClose.addEventListener('click', () => {
+    modalOverlay.style.display = 'none';
+  });
+
+  modalOverlay.addEventListener('click', (e) => {
+    if(e.target === modalOverlay) {
+      modalOverlay.style.display = 'none';
+    }
+  });
+</script>
 
 </body>
 </html>
