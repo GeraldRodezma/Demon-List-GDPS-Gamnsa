@@ -28,11 +28,14 @@
 
   .players-list {
     width: 100%;
-    max-width: 600px;
+    max-width: 800px;
     margin-bottom: 2rem;
   }
 
   .player {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
     background: rgba(255, 255, 255, 0.1);
     border: 1px solid #ffffff66;
     border-radius: 12px;
@@ -48,6 +51,14 @@
   .player:hover {
     background: rgba(255, 255, 255, 0.25);
     box-shadow: 0 0 12px #ffffff88;
+  }
+
+  .thumbnail {
+    width: 64px;
+    height: 64px;
+    border-radius: 8px;
+    object-fit: cover;
+    border: 2px solid #fff;
   }
 
   /* Modal Styles */
@@ -126,14 +137,24 @@
   const modalPlayerLevels = document.getElementById('modal-player-levels');
   const modalClose = document.getElementById('modal-close');
 
-  // Cargar jugadores desde players.json
   fetch('players.json')
     .then(response => response.json())
     .then(players => {
       players.forEach(player => {
         const div = document.createElement('div');
         div.className = 'player';
-        div.textContent = `${player.name}: ${player.score} puntos`;
+
+        const thumb = document.createElement('img');
+        thumb.className = 'thumbnail';
+        thumb.src = player.thumbnail || 'https://via.placeholder.com/64';
+        thumb.alt = player.name;
+
+        const text = document.createElement('div');
+        text.textContent = `${player.name}: ${player.score} puntos`;
+
+        div.appendChild(thumb);
+        div.appendChild(text);
+
         div.addEventListener('click', () => showModal(player));
         container.appendChild(div);
       });
@@ -146,7 +167,6 @@
   function showModal(player) {
     modalPlayerName.textContent = player.name;
     modalPlayerScore.textContent = player.score;
-
     modalPlayerLevels.innerHTML = '';
     if (!player.levels || player.levels.length === 0) {
       const li = document.createElement('li');
@@ -159,7 +179,6 @@
         modalPlayerLevels.appendChild(li);
       });
     }
-
     modalOverlay.style.display = 'flex';
   }
 
@@ -168,7 +187,7 @@
   });
 
   modalOverlay.addEventListener('click', (e) => {
-    if(e.target === modalOverlay) {
+    if (e.target === modalOverlay) {
       modalOverlay.style.display = 'none';
     }
   });
