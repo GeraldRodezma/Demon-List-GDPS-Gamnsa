@@ -1,18 +1,29 @@
 [
   {
-    "name": "#1 Tartarus",
-    "thumbnail": "https://via.placeholder.com/600x200?text=Tartarus",
-    "author": "Gerald",
-    "id": "123",
-    "pass": "2938",
-    "song": "Infinity Heaven"
+    "name": "Infernal Challenge",
+    "author": "User123",
+    "id": 101,
+    "pass": "0000",
+    "song": "Epic Song",
+    "thumbnail": "https://i.imgur.com/9z5aF5M.jpg",
+    "difficulty": 10
   },
   {
-    "name": "#2 Slaughterhouse",
-    "thumbnail": "https://via.placeholder.com/600x200?text=Slaughterhouse",
-    "author": "IceCave",
-    "id": "654321",
-    "pass": "1111",
-    "song": "The Primordial Soup"
+    "name": "Blazing Fury",
+    "author": "GamerX",
+    "id": 102,
+    "pass": "1234",
+    "song": "Fire Beats",
+    "thumbnail": "https://i.imgur.com/8XqjqXh.jpg",
+    "difficulty": 8
+  },
+  {
+    "name": "Shadow Run",
+    "author": "ShadowMaster",
+    "id": 103,
+    "pass": "5678",
+    "song": "Dark Echo",
+    "thumbnail": "https://i.imgur.com/TY7c2H8.jpg",
+    "difficulty": 6
   }
 ]
