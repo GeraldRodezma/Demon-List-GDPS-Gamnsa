@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Demon List con Puntos</title>
+  <title>Demon List con Jugadores</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet" />
   <style>
@@ -26,21 +26,18 @@
     .card {
       transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
-    button:disabled {
-      background-color: #374151;
-      cursor: not-allowed;
-    }
   </style>
 </head>
 <body>
   <div class="container mx-auto px-4 py-10">
     <h1 class="text-5xl font-bold text-center text-blue-400 mb-12 animate-pulse">🔥 Demon List - Top 5 con Puntos</h1>
 
-    <div class="mb-8 text-center text-3xl font-semibold">
-      Tu puntaje: <span id="score">0</span> pts
-    </div>
+    <h2 class="text-3xl font-semibold mb-6">Jugadores y Puntajes</h2>
+    <div id="players-list" class="mb-12 space-y-3 text-xl"></div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+      <!-- Aquí tus niveles con miniaturas y botones -->
 
       <!-- Nivel 1 -->
       <div class="bg-gray-800 rounded-2xl shadow-xl overflow-hidden card p-4 flex flex-col">
@@ -50,8 +47,6 @@
         <a href="https://www.youtube.com/watch?v=3gT1I9GHt_4" target="_blank" class="inline-block bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl mb-4 transition-all duration-300">
           🎬 Ver video
         </a>
-        <button id="level1-btn" class="bg-green-600 hover:bg-green-700 text-white py-2 rounded-xl font-semibold" 
-                onclick="completeLevel(this, 100)">Completado (+100 pts)</button>
       </div>
 
       <!-- Nivel 2 -->
@@ -62,84 +57,30 @@
         <a href="https://www.youtube.com/watch?v=oEfP1Zq6W5k" target="_blank" class="inline-block bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl mb-4 transition-all duration-300">
           🎬 Ver video
         </a>
-        <button id="level2-btn" class="bg-green-600 hover:bg-green-700 text-white py-2 rounded-xl font-semibold" 
-                onclick="completeLevel(this, 50)">Completado (+50 pts)</button>
       </div>
 
-      <!-- Nivel 3 -->
-      <div class="bg-gray-800 rounded-2xl shadow-xl overflow-hidden card p-4 flex flex-col">
-        <img src="https://img.youtube.com/vi/GgG2c2y6j4g/hqdefault.jpg" alt="Slaughterhouse" class="w-full h-48 object-cover rounded-lg mb-4" />
-        <h2 class="text-2xl font-bold text-blue-300">#3 Slaughterhouse</h2>
-        <p class="text-sm text-gray-400 mb-2">por icedcave</p>
-        <a href="https://www.youtube.com/watch?v=GgG2c2y6j4g" target="_blank" class="inline-block bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl mb-4 transition-all duration-300">
-          🎬 Ver video
-        </a>
-        <button id="level3-btn" class="bg-green-600 hover:bg-green-700 text-white py-2 rounded-xl font-semibold" 
-                onclick="completeLevel(this, 30)">Completado (+30 pts)</button>
-      </div>
-
-      <!-- Nivel 4 -->
-      <div class="bg-gray-800 rounded-2xl shadow-xl overflow-hidden card p-4 flex flex-col">
-        <img src="https://img.youtube.com/vi/SBIMiKL6s5U/hqdefault.jpg" alt="Sakupen Circles" class="w-full h-48 object-cover rounded-lg mb-4" />
-        <h2 class="text-2xl font-bold text-blue-300">#4 Sakupen Circles</h2>
-        <p class="text-sm text-gray-400 mb-2">por IcEDCave</p>
-        <a href="https://www.youtube.com/watch?v=SBIMiKL6s5U" target="_blank" class="inline-block bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl mb-4 transition-all duration-300">
-          🎬 Ver video
-        </a>
-        <button id="level4-btn" class="bg-green-600 hover:bg-green-700 text-white py-2 rounded-xl font-semibold" 
-                onclick="completeLevel(this, 20)">Completado (+20 pts)</button>
-      </div>
-
-      <!-- Nivel 5 -->
-      <div class="bg-gray-800 rounded-2xl shadow-xl overflow-hidden card p-4 flex flex-col">
-        <img src="https://img.youtube.com/vi/XRMsAyC4RXA/hqdefault.jpg" alt="Firework" class="w-full h-48 object-cover rounded-lg mb-4" />
-        <h2 class="text-2xl font-bold text-blue-300">#5 Firework</h2>
-        <p class="text-sm text-gray-400 mb-2">por Trick</p>
-        <a href="https://www.youtube.com/watch?v=XRMsAyC4RXA" target="_blank" class="inline-block bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl mb-4 transition-all duration-300">
-          🎬 Ver video
-        </a>
-        <button id="level5-btn" class="bg-green-600 hover:bg-green-700 text-white py-2 rounded-xl font-semibold" 
-                onclick="completeLevel(this, 10)">Completado (+10 pts)</button>
-      </div>
+      <!-- Agrega más niveles si quieres -->
 
     </div>
   </div>
 
   <script>
-    // Cargar puntaje guardado en localStorage
-    let totalScore = Number(localStorage.getItem('demonScore')) || 0;
-    document.getElementById('score').textContent = totalScore;
-
-    // Marcar niveles completados guardados al cargar la página
-    window.onload = () => {
-      const completedLevels = JSON.parse(localStorage.getItem('completedLevels') || '[]');
-      completedLevels.forEach(id => {
-        const btn = document.getElementById(id);
-        if(btn) {
-          btn.disabled = true;
-          btn.textContent = "Completado ✅";
-        }
+    // Carga jugadores y puntos desde players.json
+    fetch('players.json')
+      .then(response => response.json())
+      .then(players => {
+        const container = document.getElementById('players-list');
+        players.forEach(player => {
+          const div = document.createElement('div');
+          div.textContent = `${player.name}: ${player.score} puntos`;
+          container.appendChild(div);
+        });
+      })
+      .catch(err => {
+        const container = document.getElementById('players-list');
+        container.textContent = "Error cargando la lista de jugadores.";
+        console.error(err);
       });
-    }
-
-    function completeLevel(button, points) {
-      if(button.disabled) return; // evitar doble click
-
-      totalScore += points;
-      document.getElementById('score').textContent = totalScore;
-      localStorage.setItem('demonScore', totalScore);
-
-      // Desactivar botón para no sumar puntos otra vez
-      button.disabled = true;
-      button.textContent = "Completado ✅";
-
-      // Guardar el id del botón para recordar completado
-      let completedLevels = JSON.parse(localStorage.getItem('completedLevels') || '[]');
-      if(!completedLevels.includes(button.id)) {
-        completedLevels.push(button.id);
-        localStorage.setItem('completedLevels', JSON.stringify(completedLevels));
-      }
-    }
   </script>
 </body>
 </html>
