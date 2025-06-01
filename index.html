@@ -172,7 +172,7 @@
     fetch('levels.json')
       .then(response => response.json())
       .then(data => {
-        allLevels = data.sort((a, b) => b.difficulty - a.difficulty);
+        allLevels = data;
         renderLevels("all");
       });
 
@@ -188,17 +188,27 @@
       });
 
       const levelsByCategory = {};
+      categories.forEach(cat => levelsByCategory[cat] = []);
+
       visibleLevels.forEach(level => {
-        if (!levelsByCategory[level.category]) levelsByCategory[level.category] = [];
-        levelsByCategory[level.category].push(level);
+        if (levelsByCategory[level.category]) {
+          levelsByCategory[level.category].push(level);
+        }
       });
 
       for (const category of categories) {
-        if (!levelsByCategory[category]) continue;
+        const categoryLevels = levelsByCategory[category];
+        if (!categoryLevels.length) continue;
+
+        // Ordenar de más difícil a más fácil
+        categoryLevels.sort((a, b) => b.difficulty - a.difficulty);
+
         const section = document.createElement("div");
         section.className = "category";
         section.innerHTML = `<h2>${category}</h2>`;
-        levelsByCategory[category].forEach((level, index) => {
+
+        categoryLevels.forEach((level, index) => {
+          const number = index + 1;
           const div = document.createElement("div");
           div.className = "level";
           div.style.animationDelay = `${index * 0.1}s`;
@@ -212,7 +222,7 @@
 
           div.innerHTML = `
             <div class="level-info">
-              <h3>${level.name}</h3>
+              <h3>#${number} - ${level.name}</h3>
               <p><strong>Autor:</strong> ${level.author}</p>
               <p><strong>ID:</strong> ${level.id} <button class="copy-btn" onclick="copyToClipboard('${level.id}')">Copiar</button></p>
               <p><strong>Contraseña:</strong> ${level.pass}</p>
@@ -225,6 +235,7 @@
           `;
           section.appendChild(div);
         });
+
         container.appendChild(section);
       }
     }
