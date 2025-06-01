@@ -210,10 +210,12 @@
       });
     });
 
-    [...levelMap.entries()].sort().forEach(([level, playerNames]) => {
+    const sortedLevels = [...levelMap.entries()].sort((a, b) => a[0].localeCompare(b[0]));
+
+    sortedLevels.forEach(([level, playerNames], index) => {
       const div = document.createElement('div');
       div.className = 'level';
-      div.innerHTML = `<strong>${level}</strong><br><small>Completado por: ${playerNames.join(', ')}</small>`;
+      div.innerHTML = `<strong>#${index + 1} ${level}</strong><br><small>Completado por: ${playerNames.join(', ')}</small>`;
       levelsContainer.appendChild(div);
     });
   }
