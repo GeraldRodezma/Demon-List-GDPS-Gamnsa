@@ -35,11 +35,16 @@
     <h2 class="text-3xl font-semibold mb-6">Jugadores y Puntajes</h2>
     <div id="players-list" class="mb-12 space-y-3 text-xl"></div>
 
+    <!-- Botón para abrir formulario de solicitud -->
+    <div class="text-center my-8">
+      <a href="https://docs.google.com/forms/d/e/FORM_ID/viewform" target="_blank" 
+         class="inline-block bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-lg font-semibold transition duration-300">
+        Solicitar añadir jugador
+      </a>
+    </div>
+
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-
-      <!-- Aquí tus niveles con miniaturas y botones -->
-
-      <!-- Nivel 1 -->
+      <!-- Niveles con miniaturas y video -->
       <div class="bg-gray-800 rounded-2xl shadow-xl overflow-hidden card p-4 flex flex-col">
         <img src="https://img.youtube.com/vi/3gT1I9GHt_4/hqdefault.jpg" alt="Tartarus" class="w-full h-48 object-cover rounded-lg mb-4" />
         <h2 class="text-2xl font-bold text-blue-300">#1 Tartarus</h2>
@@ -49,7 +54,6 @@
         </a>
       </div>
 
-      <!-- Nivel 2 -->
       <div class="bg-gray-800 rounded-2xl shadow-xl overflow-hidden card p-4 flex flex-col">
         <img src="https://img.youtube.com/vi/oEfP1Zq6W5k/hqdefault.jpg" alt="Acheron" class="w-full h-48 object-cover rounded-lg mb-4" />
         <h2 class="text-2xl font-bold text-blue-300">#2 Acheron</h2>
@@ -58,14 +62,10 @@
           🎬 Ver video
         </a>
       </div>
-
-      <!-- Agrega más niveles si quieres -->
-
     </div>
   </div>
 
   <script>
-    // Carga jugadores y puntos desde players.json
     fetch('players.json')
       .then(response => response.json())
       .then(players => {
