@@ -56,8 +56,8 @@
 
   .player, .level {
     display: flex;
-    align-items: center;
-    gap: 1rem;
+    flex-direction: column;
+    gap: 0.3rem;
     background: rgba(255, 255, 255, 0.1);
     border: 1px solid #ffffff66;
     border-radius: 12px;
@@ -67,7 +67,7 @@
     font-weight: 600;
     box-shadow: 0 0 8px #ffffff33;
     transition: background 0.3s ease;
-    cursor: pointer;
+    cursor: default;
   }
 
   .player:hover, .level:hover {
@@ -159,7 +159,7 @@
     <button onclick="showLevels()">💀 Niveles Difíciles</button>
   </nav>
 
-  <button class="form-button" onclick="window.open('https://forms.gle/q7KareXQ8K4uYerQ7', '_blank')">➕ Añadir Jugador</button>
+  <button class="form-button" onclick="window.open('https://forms.gle/tu-formulario-aqui', '_blank')">➕ Añadir Jugador</button>
 
   <div class="players-list" id="players-list"></div>
   <div class="levels-list" id="levels-list" style="display:none;"></div>
@@ -225,19 +225,26 @@
     const levelMap = new Map();
     players.forEach(player => {
       player.levels.forEach(level => {
-        if (!levelMap.has(level)) {
-          levelMap.set(level, []);
+        if (!levelMap.has(level.name)) {
+          levelMap.set(level.name, { players: [], info: level });
         }
-        levelMap.get(level).push(player.name);
+        levelMap.get(level.name).players.push(player.name);
       });
     });
 
     const sortedLevels = [...levelMap.entries()].sort((a, b) => a[0].localeCompare(b[0]));
 
-    sortedLevels.forEach(([level, playerNames], index) => {
+    sortedLevels.forEach(([name, { players, info }], index) => {
       const div = document.createElement('div');
       div.className = 'level';
-      div.innerHTML = `<strong>#${index + 1} ${level}</strong><br><small>Completado por: ${playerNames.join(', ')}</small>`;
+      div.innerHTML = `
+        <strong>#${index + 1} ${name}</strong>
+        <span>By: ${info.author || 'Nombre del creador'}</span>
+        <span>ID del nivel: ${info.id || '123456'}</span>
+        <span>Contraseña: ${info.pass || 'XXXX'}</span>
+        <span>Canción: ${info.song || 'Nombre de la canción'}</span>
+        <small>Completado por: ${players.join(', ')}</small>
+      `;
       levelsContainer.appendChild(div);
     });
   }
@@ -253,7 +260,7 @@
     } else {
       player.levels.forEach(level => {
         const li = document.createElement('li');
-        li.textContent = level;
+        li.textContent = level.name;
         modalPlayerLevels.appendChild(li);
       });
     }
