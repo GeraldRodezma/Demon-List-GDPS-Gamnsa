@@ -1,294 +1,102 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Demon List - Detalle Jugadores desde JSON</title>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet" />
-<style>
-  body {
-    margin: 0;
-    background: linear-gradient(135deg, #000000, #1a1a1a);
-    color: #f0f0f0;
-    font-family: 'Montserrat', sans-serif;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 2rem;
-    position: relative;
-  }
-
-  h1 {
-    font-size: 3rem;
-    color: #ffffff;
-    text-shadow: 0 0 6px #ffffff88, 0 0 12px #ffffff55;
-    margin-bottom: 1.5rem;
-    text-align: center;
-  }
-
-  nav {
-    display: flex;
-    gap: 1rem;
-    margin-bottom: 2rem;
-  }
-
-  nav button {
-    background: #111;
-    color: #fff;
-    border: 1px solid #fff;
-    padding: 0.5rem 1rem;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-  }
-
-  nav button:hover {
-    background: #fff;
-    color: #000;
-  }
-
-  .players-list, .levels-list {
-    width: 100%;
-    max-width: 800px;
-    margin-bottom: 2rem;
-  }
-
-  .player, .level {
-    display: flex;
-    flex-direction: column;
-    gap: 0.3rem;
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid #ffffff66;
-    border-radius: 12px;
-    padding: 12px 20px;
-    margin-bottom: 10px;
-    color: #f0f0f0;
-    font-weight: 600;
-    box-shadow: 0 0 8px #ffffff33;
-    transition: background 0.3s ease;
-    cursor: default;
-  }
-
-  .player:hover, .level:hover {
-    background: rgba(255, 255, 255, 0.25);
-    box-shadow: 0 0 12px #ffffff88;
-  }
-
-  .thumbnail {
-    width: 64px;
-    height: 64px;
-    border-radius: 8px;
-    object-fit: cover;
-    border: 2px solid #fff;
-  }
-
-  .modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0,0,0,0.75);
-    display: none;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-  }
-
-  .modal {
-    background: #111;
-    border-radius: 12px;
-    padding: 20px;
-    max-width: 400px;
-    width: 90%;
-    box-shadow: 0 0 20px #fff;
-    color: #fff;
-    position: relative;
-  }
-
-  .modal h2 {
-    margin-top: 0;
-    color: #fff;
-    text-shadow: 0 0 8px #fff;
-  }
-
-  .modal .close-btn {
-    position: absolute;
-    top: 12px;
-    right: 16px;
-    font-size: 1.5rem;
-    color: #fff;
-    cursor: pointer;
-  }
-
-  .modal ul {
-    padding-left: 20px;
-  }
-
-  .modal ul li {
-    margin-bottom: 6px;
-  }
-
-  .form-button {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    background: #fff;
-    color: #000;
-    border: none;
-    border-radius: 8px;
-    padding: 10px 16px;
-    font-weight: bold;
-    cursor: pointer;
-    z-index: 10000;
-    transition: background 0.3s ease;
-  }
-
-  .form-button:hover {
-    background: #ddd;
-  }
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Demon List - Niveles Difíciles</title>
+  <link rel="icon" type="image/x-icon" href="AREDLCircle.ico">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Montserrat', sans-serif;
+      background-color: #0e0e0e;
+      color: #fff;
+    }
+    header {
+      background-color: #111;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 1.8rem;
+    }
+    nav a {
+      color: white;
+      margin-left: 1.5rem;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .content {
+      padding: 2rem;
+    }
+    .level {
+      background-color: #1a1a1a;
+      border: 1px solid #333;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      border-radius: 10px;
+    }
+    .level h2 {
+      margin-top: 0;
+      color: #fff;
+    }
+    .level img {
+      max-width: 100%;
+      border-radius: 10px;
+      margin-bottom: 1rem;
+    }
+    .form-link {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      background-color: #222;
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      text-decoration: none;
+      border: 1px solid #444;
+      font-weight: bold;
+    }
+  </style>
 </head>
 <body>
-
-  <h1>🔥 Demon List</h1>
-
-  <nav>
-    <button onclick="showPlayers()">🏆 Top Jugadores</button>
-    <button onclick="showLevels()">💀 Niveles Difíciles</button>
-  </nav>
-
-  <button class="form-button" onclick="window.open('https://forms.gle/tu-formulario-aqui', '_blank')">➕ Añadir Jugador</button>
-
-  <div class="players-list" id="players-list"></div>
-  <div class="levels-list" id="levels-list" style="display:none;"></div>
-
-  <div class="modal-overlay" id="modal-overlay">
-    <div class="modal" id="modal">
-      <span class="close-btn" id="modal-close">&times;</span>
-      <h2 id="modal-player-name"></h2>
-      <p><strong>Puntos:</strong> <span id="modal-player-score"></span></p>
-      <p><strong>Niveles completados:</strong></p>
-      <ul id="modal-player-levels"></ul>
-    </div>
+  <a class="form-link" href="https://forms.gle/tu-formulario" target="_blank">Añadir jugador</a>
+  <header>
+    <h1>Demon List GDPS - Niveles Difíciles</h1>
+    <nav>
+      <a href="#">Niveles</a>
+    </nav>
+  </header>
+  <div class="content" id="levels">
+    <!-- Aquí se cargarán los niveles -->
   </div>
-
-<script>
-  const playersContainer = document.getElementById('players-list');
-  const levelsContainer = document.getElementById('levels-list');
-  const modalOverlay = document.getElementById('modal-overlay');
-  const modalPlayerName = document.getElementById('modal-player-name');
-  const modalPlayerScore = document.getElementById('modal-player-score');
-  const modalPlayerLevels = document.getElementById('modal-player-levels');
-  const modalClose = document.getElementById('modal-close');
-
-  let players = [];
-
-  function loadPlayers() {
-    fetch('players.json')
+  <script>
+    fetch('levels.json')
       .then(response => response.json())
-      .then(data => {
-        players = data;
-        renderPlayers();
-        renderLevels();
+      .then(levelsData => {
+        const levelsContainer = document.getElementById("levels");
+        levelsData.forEach(level => {
+          const levelDiv = document.createElement("div");
+          levelDiv.className = "level";
+          levelDiv.innerHTML = `
+            <h2>${level.name}</h2>
+            <img src="${level.thumbnail}" alt="${level.name}" />
+            <p><strong>Autor:</strong> ${level.author}</p>
+            <p><strong>ID del nivel:</strong> ${level.id}</p>
+            <p><strong>Contraseña:</strong> ${level.pass}</p>
+            <p><strong>Canción:</strong> ${level.song}</p>
+          `;
+          levelsContainer.appendChild(levelDiv);
+        });
       })
-      .catch(err => {
-        playersContainer.textContent = 'Error cargando jugadores.';
-        console.error(err);
+      .catch(error => {
+        console.error("Error al cargar los niveles:", error);
+        document.getElementById("levels").innerText = "Error al cargar los niveles.";
       });
-  }
-
-  function renderPlayers() {
-    playersContainer.innerHTML = '';
-    players.forEach(player => {
-      const div = document.createElement('div');
-      div.className = 'player';
-
-      const thumb = document.createElement('img');
-      thumb.className = 'thumbnail';
-      thumb.src = player.thumbnail || 'https://via.placeholder.com/64';
-      thumb.alt = player.name;
-
-      const text = document.createElement('div');
-      text.textContent = `${player.name}: ${player.score} puntos`;
-
-      div.appendChild(thumb);
-      div.appendChild(text);
-      div.addEventListener('click', () => showModal(player));
-      playersContainer.appendChild(div);
-    });
-  }
-
-  function renderLevels() {
-    levelsContainer.innerHTML = '';
-    const levelMap = new Map();
-    players.forEach(player => {
-      player.levels.forEach(level => {
-        if (!levelMap.has(level.name)) {
-          levelMap.set(level.name, { players: [], info: level });
-        }
-        levelMap.get(level.name).players.push(player.name);
-      });
-    });
-
-    const sortedLevels = [...levelMap.entries()].sort((a, b) => a[0].localeCompare(b[0]));
-
-    sortedLevels.forEach(([name, { players, info }], index) => {
-      const div = document.createElement('div');
-      div.className = 'level';
-      div.innerHTML = `
-        <strong>#${index + 1} ${name}</strong>
-        <span>By: ${info.author || 'Nombre del creador'}</span>
-        <span>ID del nivel: ${info.id || '123456'}</span>
-        <span>Contraseña: ${info.pass || 'XXXX'}</span>
-        <span>Canción: ${info.song || 'Nombre de la canción'}</span>
-        <small>Completado por: ${players.join(', ')}</small>
-      `;
-      levelsContainer.appendChild(div);
-    });
-  }
-
-  function showModal(player) {
-    modalPlayerName.textContent = player.name;
-    modalPlayerScore.textContent = player.score;
-    modalPlayerLevels.innerHTML = '';
-    if (!player.levels || player.levels.length === 0) {
-      const li = document.createElement('li');
-      li.textContent = 'Ningún nivel completado aún.';
-      modalPlayerLevels.appendChild(li);
-    } else {
-      player.levels.forEach(level => {
-        const li = document.createElement('li');
-        li.textContent = level.name;
-        modalPlayerLevels.appendChild(li);
-      });
-    }
-    modalOverlay.style.display = 'flex';
-  }
-
-  modalClose.addEventListener('click', () => {
-    modalOverlay.style.display = 'none';
-  });
-
-  modalOverlay.addEventListener('click', (e) => {
-    if (e.target === modalOverlay) {
-      modalOverlay.style.display = 'none';
-    }
-  });
-
-  function showPlayers() {
-    playersContainer.style.display = 'block';
-    levelsContainer.style.display = 'none';
-  }
-
-  function showLevels() {
-    playersContainer.style.display = 'none';
-    levelsContainer.style.display = 'block';
-  }
-
-  loadPlayers();
-</script>
-
+  </script>
 </body>
 </html>
