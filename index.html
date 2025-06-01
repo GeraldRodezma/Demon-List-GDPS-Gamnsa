@@ -3,73 +3,64 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Demon List - Niveles Difíciles</title>
+  <title>Demon List GDPS</title>
   <link rel="icon" type="image/x-icon" href="AREDLCircle.ico">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet" />
   <style>
     body {
       margin: 0;
       font-family: 'Montserrat', sans-serif;
-      background: linear-gradient(to bottom, #0e0e0e, #1a1a1a);
+      background-color: #0e0e0e;
       color: #fff;
     }
     header {
-      background: #141414;
+      background-color: #111;
       padding: 1rem 2rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-bottom: 2px solid #333;
-      box-shadow: 0 4px 10px rgba(255, 0, 100, 0.2);
     }
     header h1 {
       margin: 0;
-      font-size: 2rem;
-      color: #f54291;
+      font-size: 1.8rem;
     }
     nav a {
-      color: #fff;
+      color: white;
       margin-left: 1.5rem;
       text-decoration: none;
       font-weight: bold;
-      transition: color 0.3s ease;
-    }
-    nav a:hover {
-      color: #f54291;
     }
     .content {
       padding: 2rem;
     }
+    .category {
+      margin-bottom: 2rem;
+    }
+    .category h2 {
+      border-bottom: 2px solid #444;
+      padding-bottom: 0.5rem;
+    }
     .level {
-      background: linear-gradient(to right, #1c1c1c, #2a2a2a);
-      border: 2px solid #f54291;
-      padding: 1.2rem;
-      margin-bottom: 1.5rem;
-      border-radius: 12px;
+      background-color: #1a1a1a;
+      border: 1px solid #333;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      border-radius: 10px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
-      box-shadow: 0 0 15px rgba(255, 0, 100, 0.1);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
       opacity: 0;
       transform: translateY(20px);
       animation: fadeInUp 0.6s ease forwards;
     }
     .level:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 0 20px rgba(255, 0, 100, 0.4);
+      transform: translateY(-4px);
+      box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1);
     }
     .level-info {
       flex: 1 1 60%;
-    }
-    .level-info h2 {
-      margin-top: 0;
-      color: #f54291;
-      font-size: 1.4rem;
-    }
-    .level-info p {
-      margin: 0.3rem 0;
     }
     .level-thumbnail {
       flex: 1 1 35%;
@@ -78,13 +69,27 @@
     .level-thumbnail img {
       max-width: 100%;
       border-radius: 10px;
-      border: 2px solid #f54291;
-      box-shadow: 0 0 10px rgba(255, 0, 100, 0.5);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      transition: transform 0.3s ease;
     }
     .level-thumbnail img:hover {
-      transform: scale(1.06);
-      box-shadow: 0 0 25px rgba(255, 0, 150, 0.8);
+      transform: scale(1.05);
+    }
+    .level h3 {
+      margin-top: 0;
+      color: #fff;
+    }
+    .copy-btn {
+      background-color: #333;
+      border: none;
+      color: white;
+      padding: 4px 8px;
+      margin-left: 8px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.85rem;
+    }
+    .copy-btn:hover {
+      background-color: #555;
     }
     @media (max-width: 768px) {
       .level {
@@ -106,151 +111,75 @@
         transform: translateY(0);
       }
     }
-
-    /* Toast notification */
-    .toast {
-      position: fixed;
-      bottom: 30px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: #f54291;
-      color: white;
-      padding: 10px 20px;
-      border-radius: 20px;
-      font-size: 0.9rem;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.4s ease, transform 0.4s ease;
-      z-index: 9999;
-    }
-    .toast.show {
-      opacity: 1;
-      transform: translateX(-50%) translateY(-10px);
-    }
-
-    /* Botones copiar */
-    .copy-btn {
-      margin-left: 10px;
-      padding: 4px 8px;
-      font-size: 0.8rem;
-      background-color: #f54291;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-    }
-    .copy-btn:hover {
-      background-color: #d3317b;
-    }
-
-    /* Link abrir canción */
-    .song-link {
-      color: #f54291;
-      text-decoration: underline;
-      margin-left: 8px;
-      font-weight: 600;
-    }
   </style>
 </head>
 <body>
   <header>
-    <h1>Demon List GDPS - Niveles Difíciles</h1>
+    <h1>Demon List GDPS</h1>
     <nav>
-      <a href="#">Niveles</a>
+      <a href="#">Inicio</a>
     </nav>
   </header>
   <div class="content" id="levels">
-    <!-- Aquí se cargarán los niveles -->
+    <!-- Categorías y niveles se cargarán aquí -->
   </div>
-
   <script>
-    // Función para saber si es URL válida
-    function isURL(str) {
-      try {
-        const url = new URL(str);
-        return url.protocol === "http:" || url.protocol === "https:";
-      } catch (_) {
-        return false;
-      }
-    }
-
-    // Mostrar notificación toast
-    function showToast(message) {
-      const toast = document.createElement("div");
-      toast.className = "toast";
-      toast.innerText = message;
-      document.body.appendChild(toast);
-
-      setTimeout(() => {
-        toast.classList.add("show");
-      }, 100);
-
-      setTimeout(() => {
-        toast.classList.remove("show");
-        setTimeout(() => {
-          document.body.removeChild(toast);
-        }, 500);
-      }, 3000);
-    }
-
-    // Copiar texto al portapapeles con notificación
-    function copyToClipboard(text) {
-      navigator.clipboard.writeText(text).then(() => {
-        showToast("Copiado: " + text);
-      }).catch(err => {
-        console.error("Error al copiar:", err);
-      });
-    }
-
-    // Carga y muestra niveles ordenados por dificultad
     fetch('levels.json')
       .then(response => response.json())
       .then(levelsData => {
-        // Ordenar del más difícil (mayor) al más fácil (menor)
+        // Ordenar por dificultad de mayor a menor
         levelsData.sort((a, b) => b.difficulty - a.difficulty);
 
-        const levelsContainer = document.getElementById("levels");
-        levelsData.forEach((level, index) => {
-          const levelDiv = document.createElement("div");
-          levelDiv.className = "level";
-          levelDiv.style.animationDelay = `${index * 0.1}s`;
+        const categories = ["Extreme Demon", "Insane Demon", "Hard Demon", "Medium Demon", "Easy Demon"];
+        const container = document.getElementById("levels");
 
-          // Mostrar canción con enlace si es URL
-          let songHTML = "";
-          if (isURL(level.song)) {
-            songHTML = `<a href="${level.song}" target="_blank" class="song-link" title="Escuchar canción 🎵">🎵 Escuchar</a>`;
-          } else {
-            songHTML = level.song;
-          }
+        categories.forEach(category => {
+          const categoryDiv = document.createElement("div");
+          categoryDiv.className = "category";
+          categoryDiv.innerHTML = `<h2>${category}</h2>`;
 
-          levelDiv.innerHTML = `
-            <div class="level-info">
-              <h2>#${index + 1} - ${level.name}</h2>
-              <p><strong>Autor:</strong> ${level.author}</p>
-              <p>
-                <strong>ID del nivel:</strong> ${level.id}
-                <button class="copy-btn" onclick="copyToClipboard('${level.id}')">Copiar</button>
-              </p>
-              <p>
-                <strong>Contraseña:</strong> ${level.pass}
-              </p>
-              <p>
-                <strong>Canción:</strong> ${songHTML}
-                <button class="copy-btn" onclick="copyToClipboard('${level.song}')">Copiar</button>
-              </p>
-            </div>
-            <div class="level-thumbnail">
-              <img src="${level.thumbnail}" alt="${level.name}" />
-            </div>
-          `;
-          levelsContainer.appendChild(levelDiv);
+          const levelsInCategory = levelsData.filter(l => l.category === category);
+
+          levelsInCategory.forEach((level, index) => {
+            const levelDiv = document.createElement("div");
+            levelDiv.className = "level";
+            levelDiv.style.animationDelay = `${index * 0.1}s`;
+
+            const isLink = level.song.startsWith("http");
+            const songHTML = isLink
+              ? `<a href="${level.song}" target="_blank" style="color: #00adee;">Escuchar canción</a>`
+              : `${level.song} <button class="copy-btn" onclick="copyToClipboard('${level.song}')">Copiar ID</button>`;
+
+            levelDiv.innerHTML = `
+              <div class="level-info">
+                <h3>${level.name}</h3>
+                <p><strong>Autor:</strong> ${level.author}</p>
+                <p><strong>ID del nivel:</strong> ${level.id} <button class="copy-btn" onclick="copyToClipboard('${level.id}')">Copiar</button></p>
+                <p><strong>Contraseña:</strong> ${level.pass}</p>
+                <p><strong>Canción:</strong> ${songHTML}</p>
+              </div>
+              <div class="level-thumbnail">
+                <img src="${level.thumbnail}" alt="Miniatura de ${level.name}">
+              </div>
+            `;
+            categoryDiv.appendChild(levelDiv);
+          });
+
+          container.appendChild(categoryDiv);
         });
       })
       .catch(error => {
         console.error("Error al cargar los niveles:", error);
         document.getElementById("levels").innerText = "Error al cargar los niveles.";
       });
+
+    function copyToClipboard(text) {
+      navigator.clipboard.writeText(text).then(() => {
+        alert("Copiado: " + text);
+      }).catch(err => {
+        console.error('Error al copiar: ', err);
+      });
+    }
   </script>
 </body>
 </html>
