@@ -39,15 +39,57 @@
       padding: 1rem;
       margin-bottom: 1rem;
       border-radius: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeInUp 0.6s ease forwards;
+    }
+    .level:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1);
+    }
+    .level-info {
+      flex: 1 1 60%;
+    }
+    .level-thumbnail {
+      flex: 1 1 35%;
+      text-align: right;
+    }
+    .level-thumbnail img {
+      max-width: 100%;
+      border-radius: 10px;
+      transition: transform 0.3s ease;
+    }
+    .level-thumbnail img:hover {
+      transform: scale(1.05);
     }
     .level h2 {
       margin-top: 0;
       color: #fff;
     }
-    .level img {
-      max-width: 100%;
-      border-radius: 10px;
-      margin-bottom: 1rem;
+    @media (max-width: 768px) {
+      .level {
+        flex-direction: column;
+        text-align: left;
+      }
+      .level-thumbnail {
+        text-align: center;
+        margin-top: 1rem;
+      }
+    }
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
   </style>
 </head>
@@ -66,16 +108,21 @@
       .then(response => response.json())
       .then(levelsData => {
         const levelsContainer = document.getElementById("levels");
-        levelsData.forEach(level => {
+        levelsData.forEach((level, index) => {
           const levelDiv = document.createElement("div");
           levelDiv.className = "level";
+          levelDiv.style.animationDelay = `${index * 0.1}s`;
           levelDiv.innerHTML = `
-            <h2>${level.name}</h2>
-            <img src="${level.thumbnail}" alt="${level.name}" />
-            <p><strong>Autor:</strong> ${level.author}</p>
-            <p><strong>ID del nivel:</strong> ${level.id}</p>
-            <p><strong>Contraseña:</strong> ${level.pass}</p>
-            <p><strong>Canción:</strong> ${level.song}</p>
+            <div class="level-info">
+              <h2>${level.name}</h2>
+              <p><strong>Autor:</strong> ${level.author}</p>
+              <p><strong>ID del nivel:</strong> ${level.id}</p>
+              <p><strong>Contraseña:</strong> ${level.pass}</p>
+              <p><strong>Canción:</strong> ${level.song}</p>
+            </div>
+            <div class="level-thumbnail">
+              <img src="${level.thumbnail}" alt="${level.name}" />
+            </div>
           `;
           levelsContainer.appendChild(levelDiv);
         });
