@@ -2,10 +2,10 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Demon List GDPS</title>
-  <link rel="icon" type="image/x-icon" href="AREDLCircle.ico">
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Demon List GDPS Gamnsa</title>
+  <link rel="icon" href="AREDLCircle.ico" type="image/x-icon" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
   <style>
     body {
       margin: 0;
@@ -25,49 +25,36 @@
       margin: 0;
       font-size: 1.8rem;
     }
-    nav a {
-      color: white;
-      margin-left: 1.5rem;
-      text-decoration: none;
-      font-weight: bold;
+    nav {
+      margin-top: 1rem;
     }
-
-    .controls {
-      padding: 1rem;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 10px;
-      background-color: #111;
-    }
-    .filters button, .controls input {
+    nav button {
+      margin: 0.5rem;
       padding: 0.5rem 1rem;
-      background-color: #222;
+      background-color: #333;
+      color: white;
       border: none;
-      color: #fff;
       border-radius: 5px;
-      font-size: 1rem;
-      transition: background-color 0.3s ease;
-    }
-    .filters button:hover,
-    .filters button.active {
-      background-color: #00adee;
       cursor: pointer;
     }
-    .controls input {
-      border: 1px solid #444;
-      width: 220px;
+    nav button.active {
+      background-color: #555;
     }
-
+    .search-container {
+      text-align: center;
+      margin: 1rem;
+    }
+    .search-container input {
+      padding: 0.5rem;
+      width: 80%;
+      max-width: 400px;
+      border-radius: 5px;
+      border: 1px solid #333;
+      background-color: #1a1a1a;
+      color: white;
+    }
     .content {
       padding: 2rem;
-    }
-    .category {
-      margin-bottom: 2rem;
-    }
-    .category h2 {
-      border-bottom: 2px solid #444;
-      padding-bottom: 0.5rem;
     }
     .level {
       background-color: #1a1a1a;
@@ -80,9 +67,6 @@
       align-items: center;
       flex-wrap: wrap;
       transition: transform 0.2s ease, box-shadow 0.2s ease;
-      opacity: 0;
-      transform: translateY(20px);
-      animation: fadeInUp 0.6s ease forwards;
     }
     .level:hover {
       transform: translateY(-4px);
@@ -97,36 +81,32 @@
     }
     .level-thumbnail img {
       max-width: 100%;
-      border-radius: 10px;
-      transition: transform 0.3s ease;
+      border-radius: 15px;
+      border: 3px solid transparent;
+      background: linear-gradient(135deg, #00ffff, #ff00ff);
+      background-origin: border-box;
+      background-clip: padding-box, border-box;
+      box-shadow: 0 4px 20px rgba(255, 255, 255, 0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
     .level-thumbnail img:hover {
       transform: scale(1.05);
+      box-shadow: 0 0 20px rgba(0, 255, 255, 0.5), 0 0 40px rgba(255, 0, 255, 0.4);
     }
-    .level h3 {
-      margin-top: 0;
-      color: #fff;
-    }
-    .copy-btn {
-      background-color: #333;
+    .copy-button {
+      margin-left: 10px;
+      padding: 3px 6px;
+      background: #444;
       border: none;
-      color: white;
-      padding: 4px 8px;
-      margin-left: 8px;
       border-radius: 4px;
+      color: white;
       cursor: pointer;
-      font-size: 0.85rem;
     }
-    .copy-btn:hover {
-      background-color: #555;
-    }
-    .favorite-btn {
-      background-color: transparent;
-      border: none;
-      color: gold;
-      font-size: 1.2rem;
-      cursor: pointer;
-      margin-top: 8px;
+    .category-title {
+      font-size: 1.5rem;
+      margin-top: 2rem;
+      border-bottom: 2px solid #444;
+      padding-bottom: 0.5rem;
     }
     @media (max-width: 768px) {
       .level {
@@ -138,138 +118,101 @@
         margin-top: 1rem;
       }
     }
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
   </style>
 </head>
 <body>
   <header>
     <h1>Demon List GDPS</h1>
-    <nav><a href="#">Inicio</a></nav>
+    <nav>
+      <button onclick="filterCategory('All')" class="active">Todos</button>
+      <button onclick="filterCategory('Easy Demon')">Easy Demon</button>
+      <button onclick="filterCategory('Medium Demon')">Medium Demon</button>
+      <button onclick="filterCategory('Hard Demon')">Hard Demon</button>
+      <button onclick="filterCategory('Insane Demon')">Insane Demon</button>
+      <button onclick="filterCategory('Extreme Demon')">Extreme Demon</button>
+      <button onclick="filterCategory('Favoritos')">⭐ Favoritos</button>
+    </nav>
   </header>
-
-  <div class="controls">
-    <div class="filters" id="filterButtons">
-      <button data-filter="all" class="active">Todos</button>
-      <button data-filter="Easy Demon">Easy</button>
-      <button data-filter="Medium Demon">Medium</button>
-      <button data-filter="Hard Demon">Hard</button>
-      <button data-filter="Insane Demon">Insane</button>
-      <button data-filter="Extreme Demon">Extreme</button>
-      <button data-filter="favorites">⭐ Favoritos</button>
-    </div>
-    <input type="text" id="searchInput" placeholder="Buscar nivel o autor...">
+  <div class="search-container">
+    <input type="text" id="searchInput" placeholder="Buscar nivel..." oninput="filterLevels()">
   </div>
-
   <div class="content" id="levels"></div>
-
   <script>
     let allLevels = [];
-    let favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+    let favoritos = new Set(JSON.parse(localStorage.getItem('favoritos') || '[]'));
 
-    fetch('levels.json')
-      .then(response => response.json())
-      .then(data => {
-        allLevels = data;
-        renderLevels("all");
+    function copyToClipboard(text) {
+      navigator.clipboard.writeText(text).then(() => alert('Copiado: ' + text));
+    }
+
+    function renderLevels(filteredLevels) {
+      const levelsContainer = document.getElementById('levels');
+      levelsContainer.innerHTML = '';
+
+      const categories = {};
+      filteredLevels.forEach(level => {
+        if (!categories[level.difficulty]) categories[level.difficulty] = [];
+        categories[level.difficulty].push(level);
       });
 
-    function renderLevels(filter, searchTerm = "") {
-      const container = document.getElementById("levels");
-      container.innerHTML = "";
+      for (const [category, levels] of Object.entries(categories)) {
+        levels.sort((a, b) => b.difficultyValue - a.difficultyValue);
+        const title = document.createElement('h2');
+        title.className = 'category-title';
+        title.textContent = category;
+        levelsContainer.appendChild(title);
 
-      const categories = ["Extreme Demon", "Insane Demon", "Hard Demon", "Medium Demon", "Easy Demon"];
-      const visibleLevels = allLevels.filter(level => {
-        const matchCategory = filter === "all" || filter === level.category || (filter === "favorites" && favorites.includes(level.id));
-        const matchSearch = level.name.toLowerCase().includes(searchTerm) || level.author.toLowerCase().includes(searchTerm);
-        return matchCategory && matchSearch;
-      });
-
-      const levelsByCategory = {};
-      categories.forEach(cat => levelsByCategory[cat] = []);
-
-      visibleLevels.forEach(level => {
-        if (levelsByCategory[level.category]) {
-          levelsByCategory[level.category].push(level);
-        }
-      });
-
-      for (const category of categories) {
-        const categoryLevels = levelsByCategory[category];
-        if (!categoryLevels.length) continue;
-
-        // Ordenar de más difícil a más fácil
-        categoryLevels.sort((a, b) => b.difficulty - a.difficulty);
-
-        const section = document.createElement("div");
-        section.className = "category";
-        section.innerHTML = `<h2>${category}</h2>`;
-
-        categoryLevels.forEach((level, index) => {
-          const number = index + 1;
-          const div = document.createElement("div");
-          div.className = "level";
-          div.style.animationDelay = `${index * 0.1}s`;
-
-          const isLink = level.song.startsWith("http");
-          const songHTML = isLink
-            ? `<a href="${level.song}" target="_blank" style="color: #00adee;">Escuchar canción</a>`
-            : `${level.song} <button class="copy-btn" onclick="copyToClipboard('${level.song}')">Copiar ID</button>`;
-
-          const favText = favorites.includes(level.id) ? "⭐ Quitar de favoritos" : "☆ Añadir a favoritos";
-
+        levels.forEach((level, i) => {
+          const div = document.createElement('div');
+          div.className = 'level';
           div.innerHTML = `
             <div class="level-info">
-              <h3>#${number} - ${level.name}</h3>
+              <h2>#${i + 1} - ${level.name}</h2>
               <p><strong>Autor:</strong> ${level.author}</p>
-              <p><strong>ID:</strong> ${level.id} <button class="copy-btn" onclick="copyToClipboard('${level.id}')">Copiar</button></p>
+              <p><strong>ID:</strong> ${level.id} <button class="copy-button" onclick="copyToClipboard('${level.id}')">Copiar</button></p>
               <p><strong>Contraseña:</strong> ${level.pass}</p>
-              <p><strong>Canción:</strong> ${songHTML}</p>
-              <button class="favorite-btn" onclick="toggleFavorite('${level.id}', this)">${favText}</button>
+              <p><strong>Canción:</strong> ${level.song} <button class="copy-button" onclick="copyToClipboard('${level.song}')">Copiar</button></p>
+              <button onclick="toggleFavorito('${level.id}')">${favoritos.has(level.id) ? '★ Quitar de favoritos' : '☆ Añadir a favoritos'}</button>
             </div>
             <div class="level-thumbnail">
               <img src="${level.thumbnail}" alt="${level.name}">
             </div>
           `;
-          section.appendChild(div);
+          levelsContainer.appendChild(div);
         });
-
-        container.appendChild(section);
       }
     }
 
-    function copyToClipboard(text) {
-      navigator.clipboard.writeText(text).then(() => alert("Copiado: " + text));
-    }
-
-    function toggleFavorite(id, btn) {
-      if (favorites.includes(id)) {
-        favorites = favorites.filter(f => f !== id);
-        btn.innerText = "☆ Añadir a favoritos";
+    function filterCategory(category) {
+      document.querySelectorAll('nav button').forEach(btn => btn.classList.remove('active'));
+      [...document.querySelectorAll('nav button')].find(b => b.textContent.includes(category) || (category === 'All' && b.textContent === 'Todos')).classList.add('active');
+      if (category === 'Favoritos') {
+        renderLevels(allLevels.filter(l => favoritos.has(l.id)));
+      } else if (category === 'All') {
+        renderLevels(allLevels);
       } else {
-        favorites.push(id);
-        btn.innerText = "⭐ Quitar de favoritos";
+        renderLevels(allLevels.filter(l => l.difficulty === category));
       }
-      localStorage.setItem("favorites", JSON.stringify(favorites));
     }
 
-    document.querySelectorAll("#filterButtons button").forEach(btn => {
-      btn.addEventListener("click", () => {
-        document.querySelectorAll("#filterButtons button").forEach(b => b.classList.remove("active"));
-        btn.classList.add("active");
-        const filter = btn.getAttribute("data-filter");
-        const term = document.getElementById("searchInput").value.toLowerCase();
-        renderLevels(filter, term);
-      });
-    });
+    function filterLevels() {
+      const query = document.getElementById('searchInput').value.toLowerCase();
+      renderLevels(allLevels.filter(l => l.name.toLowerCase().includes(query)));
+    }
 
-    document.getElementById("searchInput").addEventListener("input", e => {
-      const searchTerm = e.target.value.toLowerCase();
-      const activeFilter = document.querySelector("#filterButtons .active").getAttribute("data-filter");
-      renderLevels(activeFilter, searchTerm);
-    });
+    function toggleFavorito(id) {
+      if (favoritos.has(id)) favoritos.delete(id);
+      else favoritos.add(id);
+      localStorage.setItem('favoritos', JSON.stringify([...favoritos]));
+      filterCategory(document.querySelector('nav button.active').textContent);
+    }
+
+    fetch('levels.json')
+      .then(res => res.json())
+      .then(data => {
+        allLevels = data;
+        renderLevels(allLevels);
+      });
   </script>
 </body>
 </html>
