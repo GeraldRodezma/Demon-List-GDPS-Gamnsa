@@ -26,13 +26,34 @@
     text-align: center;
   }
 
-  .players-list {
+  nav {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  nav button {
+    background: #111;
+    color: #fff;
+    border: 1px solid #fff;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  nav button:hover {
+    background: #fff;
+    color: #000;
+  }
+
+  .players-list, .levels-list {
     width: 100%;
     max-width: 800px;
     margin-bottom: 2rem;
   }
 
-  .player {
+  .player, .level {
     display: flex;
     align-items: center;
     gap: 1rem;
@@ -48,7 +69,7 @@
     cursor: pointer;
   }
 
-  .player:hover {
+  .player:hover, .level:hover {
     background: rgba(255, 255, 255, 0.25);
     box-shadow: 0 0 12px #ffffff88;
   }
@@ -61,7 +82,6 @@
     border: 2px solid #fff;
   }
 
-  /* Modal Styles */
   .modal-overlay {
     position: fixed;
     top: 0;
@@ -112,13 +132,16 @@
 </head>
 <body>
 
-  <h1>🔥 Demon List - Jugadores y Detalles</h1>
+  <h1>🔥 Demon List</h1>
 
-  <div class="players-list" id="players-list">
-    <!-- Lista cargada aquí -->
-  </div>
+  <nav>
+    <button onclick="showPlayers()">🏆 Top Jugadores</button>
+    <button onclick="showLevels()">💀 Niveles Difíciles</button>
+  </nav>
 
-  <!-- Modal -->
+  <div class="players-list" id="players-list"></div>
+  <div class="levels-list" id="levels-list" style="display:none;"></div>
+
   <div class="modal-overlay" id="modal-overlay">
     <div class="modal" id="modal">
       <span class="close-btn" id="modal-close">&times;</span>
@@ -130,39 +153,70 @@
   </div>
 
 <script>
-  const container = document.getElementById('players-list');
+  const playersContainer = document.getElementById('players-list');
+  const levelsContainer = document.getElementById('levels-list');
   const modalOverlay = document.getElementById('modal-overlay');
   const modalPlayerName = document.getElementById('modal-player-name');
   const modalPlayerScore = document.getElementById('modal-player-score');
   const modalPlayerLevels = document.getElementById('modal-player-levels');
   const modalClose = document.getElementById('modal-close');
 
-  fetch('players.json')
-    .then(response => response.json())
-    .then(players => {
-      players.forEach(player => {
-        const div = document.createElement('div');
-        div.className = 'player';
+  let players = [];
 
-        const thumb = document.createElement('img');
-        thumb.className = 'thumbnail';
-        thumb.src = player.thumbnail || 'https://via.placeholder.com/64';
-        thumb.alt = player.name;
-
-        const text = document.createElement('div');
-        text.textContent = `${player.name}: ${player.score} puntos`;
-
-        div.appendChild(thumb);
-        div.appendChild(text);
-
-        div.addEventListener('click', () => showModal(player));
-        container.appendChild(div);
+  function loadPlayers() {
+    fetch('players.json')
+      .then(response => response.json())
+      .then(data => {
+        players = data;
+        renderPlayers();
+        renderLevels();
+      })
+      .catch(err => {
+        playersContainer.textContent = 'Error cargando jugadores.';
+        console.error(err);
       });
-    })
-    .catch(err => {
-      container.textContent = 'Error cargando jugadores.';
-      console.error(err);
+  }
+
+  function renderPlayers() {
+    playersContainer.innerHTML = '';
+    players.forEach(player => {
+      const div = document.createElement('div');
+      div.className = 'player';
+
+      const thumb = document.createElement('img');
+      thumb.className = 'thumbnail';
+      thumb.src = player.thumbnail || 'https://via.placeholder.com/64';
+      thumb.alt = player.name;
+
+      const text = document.createElement('div');
+      text.textContent = `${player.name}: ${player.score} puntos`;
+
+      div.appendChild(thumb);
+      div.appendChild(text);
+      div.addEventListener('click', () => showModal(player));
+      playersContainer.appendChild(div);
     });
+  }
+
+  function renderLevels() {
+    levelsContainer.innerHTML = '';
+    const levelMap = new Map();
+    players.forEach(player => {
+      player.levels.forEach(level => {
+        if (!levelMap.has(level)) {
+          levelMap.set(level, []);
+        }
+        levelMap.get(level).push(player.name);
+      });
+    });
+
+    [...levelMap.entries()].sort().forEach(([level, playerNames]) => {
+      const div = document.createElement('div');
+      div.className = 'level';
+      div.innerHTML = `<strong>${level}</strong><br><small>Completado por: ${playerNames.join(', ')}</small>`;
+      levelsContainer.appendChild(div);
+    });
+  }
 
   function showModal(player) {
     modalPlayerName.textContent = player.name;
@@ -191,6 +245,18 @@
       modalOverlay.style.display = 'none';
     }
   });
+
+  function showPlayers() {
+    playersContainer.style.display = 'block';
+    levelsContainer.style.display = 'none';
+  }
+
+  function showLevels() {
+    playersContainer.style.display = 'none';
+    levelsContainer.style.display = 'block';
+  }
+
+  loadPlayers();
 </script>
 
 </body>
