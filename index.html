@@ -16,6 +16,7 @@
     flex-direction: column;
     align-items: center;
     padding: 2rem;
+    position: relative;
   }
 
   h1 {
@@ -128,6 +129,25 @@
   .modal ul li {
     margin-bottom: 6px;
   }
+
+  .form-button {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #fff;
+    color: #000;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 16px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 10000;
+    transition: background 0.3s ease;
+  }
+
+  .form-button:hover {
+    background: #ddd;
+  }
 </style>
 </head>
 <body>
@@ -138,6 +158,8 @@
     <button onclick="showPlayers()">🏆 Top Jugadores</button>
     <button onclick="showLevels()">💀 Niveles Difíciles</button>
   </nav>
+
+  <button class="form-button" onclick="window.open('https://forms.gle/q7KareXQ8K4uYerQ7', '_blank')">➕ Añadir Jugador</button>
 
   <div class="players-list" id="players-list"></div>
   <div class="levels-list" id="levels-list" style="display:none;"></div>
