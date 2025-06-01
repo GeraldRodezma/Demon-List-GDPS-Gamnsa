@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Demon List - Niveles Difíciles</title>
-  <link rel="icon" type="image/x-icon" href="AREDLCircle.ico">
+  <link rel="icon" type="image/x-icon" href="AREDLCircle.ico" />
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet" />
   <style>
     body {
@@ -107,6 +107,9 @@
     fetch('levels.json')
       .then(response => response.json())
       .then(levelsData => {
+        // Ordenar niveles del más difícil (mayor dificultad) al más fácil
+        levelsData.sort((a, b) => b.difficulty - a.difficulty);
+
         const levelsContainer = document.getElementById("levels");
         levelsData.forEach((level, index) => {
           const levelDiv = document.createElement("div");
@@ -114,11 +117,12 @@
           levelDiv.style.animationDelay = `${index * 0.1}s`;
           levelDiv.innerHTML = `
             <div class="level-info">
-              <h2>${level.name}</h2>
+              <h2>${index + 1}. ${level.name}</h2>
               <p><strong>Autor:</strong> ${level.author}</p>
               <p><strong>ID del nivel:</strong> ${level.id}</p>
               <p><strong>Contraseña:</strong> ${level.pass}</p>
               <p><strong>Canción:</strong> ${level.song}</p>
+              <p><strong>Dificultad:</strong> ${level.difficulty}</p>
             </div>
             <div class="level-thumbnail">
               <img src="${level.thumbnail}" alt="${level.name}" />
