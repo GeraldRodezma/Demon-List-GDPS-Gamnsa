@@ -1,5 +1,22 @@
 [
-  {"name": "Gerald", "score": 150},
-  {"name": "Ana", "score": 80},
-  {"name": "Carlos", "score": 40}
+  {
+    "name": "PlayerOne",
+    "score": 100
+  },
+  {
+    "name": "PlayerTwo",
+    "score": 75
+  },
+  {
+    "name": "PlayerThree",
+    "score": 50
+  },
+  {
+    "name": "PlayerFour",
+    "score": 25
+  },
+  {
+    "name": "PlayerFive",
+    "score": 10
+  }
 ]
