@@ -1,52 +1,52 @@
 [
   {
+    "name": "Slaughterhouse",
+    "author": "Icedcave",
+    "id": "12345678",
+    "pass": "1234",
+    "song": "https://www.newgrounds.com/audio/listen/123456",
+    "thumbnail": "https://i.imgur.com/UcC75Q6.png",
+    "category": "Extreme Demon",
+    "difficulty": 10
+  },
+  {
     "name": "Cataclysm",
-    "author": "GGB0Y",
-    "id": "123456",
-    "pass": "123456",
-    "song": "654321",
-    "difficulty": "Extreme Demon",
-    "difficultyValue": 10,
-    "thumbnail": "https://i.imgur.com/UcC75Q6.png"
+    "author": "Ggb0y",
+    "id": "23456789",
+    "pass": "4321",
+    "song": "789012",
+    "thumbnail": "https://i.imgur.com/abcd123.png",
+    "category": "Insane Demon",
+    "difficulty": 8
   },
   {
     "name": "Nine Circles",
     "author": "Zobros",
-    "id": "234567",
-    "pass": "456789",
-    "song": "123456",
-    "difficulty": "Insane Demon",
-    "difficultyValue": 9,
-    "thumbnail": "https://i.imgur.com/UcC75Q6.png"
+    "id": "34567890",
+    "pass": "0000",
+    "song": "https://www.newgrounds.com/audio/listen/876543",
+    "thumbnail": "https://i.imgur.com/efgh456.png",
+    "category": "Hard Demon",
+    "difficulty": 6
   },
   {
-    "name": "Acropolis",
-    "author": "Zobros",
-    "id": "345678",
-    "pass": "159753",
+    "name": "Problematic",
+    "author": "Dhafin",
+    "id": "45678901",
+    "pass": "9999",
     "song": "654321",
-    "difficulty": "Hard Demon",
-    "difficultyValue": 7,
-    "thumbnail": "https://i.imgur.com/UcC75Q6.png"
-  },
-  {
-    "name": "Clubstep",
-    "author": "RobTop",
-    "id": "987654",
-    "pass": "111111",
-    "song": "876543",
-    "difficulty": "Medium Demon",
-    "difficultyValue": 5,
-    "thumbnail": "https://i.imgur.com/UcC75Q6.png"
+    "thumbnail": "https://i.imgur.com/ijkl789.png",
+    "category": "Medium Demon",
+    "difficulty": 4
   },
   {
     "name": "The Nightmare",
     "author": "Jax",
-    "id": "765432",
-    "pass": "222222",
-    "song": "765432",
-    "difficulty": "Easy Demon",
-    "difficultyValue": 2,
-    "thumbnail": "https://i.imgur.com/UcC75Q6.png"
+    "id": "56789012",
+    "pass": "1111",
+    "song": "https://www.newgrounds.com/audio/listen/111111",
+    "thumbnail": "https://i.imgur.com/mnop012.png",
+    "category": "Easy Demon",
+    "difficulty": 2
   }
 ]
