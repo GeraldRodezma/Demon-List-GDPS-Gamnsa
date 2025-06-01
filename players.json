@@ -1,27 +1,37 @@
 [
   {
-    "name": "PlayerOne",
+    "name": "Gerald",
     "score": 100,
-    "levels": ["Tartarus", "Acheron", "Deadlocked"]
+    "thumbnail": "https://via.placeholder.com/64",
+    "levels": [
+      {
+        "name": "Tartarus",
+        "author": "Gerald",
+        "id": "123",
+        "pass": "2938",
+        "song": "Infinity Heaven"
+      },
+      {
+        "name": "Slaughterhouse",
+        "author": "IceCave",
+        "id": "654321",
+        "pass": "1111",
+        "song": "The Primordial Soup"
+      }
+    ]
   },
   {
-    "name": "PlayerTwo",
-    "score": 75,
-    "levels": ["Acheron", "Deadlocked"]
-  },
-  {
-    "name": "PlayerThree",
+    "name": "Luis",
     "score": 50,
-    "levels": ["Deadlocked"]
-  },
-  {
-    "name": "PlayerFour",
-    "score": 25,
-    "levels": []
-  },
-  {
-    "name": "PlayerFive",
-    "score": 10,
-    "levels": ["Tartarus"]
+    "thumbnail": "https://via.placeholder.com/64",
+    "levels": [
+      {
+        "name": "Slaughterhouse",
+        "author": "IceCave",
+        "id": "654321",
+        "pass": "1111",
+        "song": "The Primordial Soup"
+      }
+    ]
   }
 ]
