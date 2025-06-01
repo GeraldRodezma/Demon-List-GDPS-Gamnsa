@@ -1,62 +1,52 @@
 [
   {
-    "name": "Bloodlust",
-    "author": "Knobbelboy",
-    "id": "123456",
-    "pass": "1234",
-    "song": "ID 752123",
-    "thumbnail": "https://i.imgur.com/UcC75Q6.png",
-    "difficulty": 10,
-    "category": "Extreme Demon"
-  },
-  {
-    "name": "Sakupen Hell",
-    "author": "TrusTa",
-    "id": "789101",
-    "pass": "9999",
-    "song": "https://www.newgrounds.com/audio/listen/347643",
-    "thumbnail": "https://i.imgur.com/NXolK3r.png",
-    "difficulty": 9,
-    "category": "Extreme Demon"
-  },
-  {
     "name": "Cataclysm",
-    "author": "Gboy",
-    "id": "111213",
-    "pass": "0000",
-    "song": "ID 422085",
-    "thumbnail": "https://i.imgur.com/l2MNO3F.png",
-    "difficulty": 7,
-    "category": "Insane Demon"
+    "author": "GGB0Y",
+    "id": "123456",
+    "pass": "123456",
+    "song": "654321",
+    "difficulty": "Extreme Demon",
+    "difficultyValue": 10,
+    "thumbnail": "https://i.imgur.com/UcC75Q6.png"
+  },
+  {
+    "name": "Nine Circles",
+    "author": "Zobros",
+    "id": "234567",
+    "pass": "456789",
+    "song": "123456",
+    "difficulty": "Insane Demon",
+    "difficultyValue": 9,
+    "thumbnail": "https://i.imgur.com/UcC75Q6.png"
   },
   {
     "name": "Acropolis",
     "author": "Zobros",
-    "id": "141516",
-    "pass": "123456",
-    "song": "https://www.newgrounds.com/audio/listen/589614",
-    "thumbnail": "https://i.imgur.com/L8D9Yq9.png",
-    "difficulty": 5,
-    "category": "Hard Demon"
+    "id": "345678",
+    "pass": "159753",
+    "song": "654321",
+    "difficulty": "Hard Demon",
+    "difficultyValue": 7,
+    "thumbnail": "https://i.imgur.com/UcC75Q6.png"
   },
   {
-    "name": "Theory of Skrillex",
-    "author": "DJ Atom",
-    "id": "171819",
-    "pass": "7410",
-    "song": "ID 336689",
-    "thumbnail": "https://i.imgur.com/oWqD4Ra.png",
-    "difficulty": 3,
-    "category": "Medium Demon"
+    "name": "Clubstep",
+    "author": "RobTop",
+    "id": "987654",
+    "pass": "111111",
+    "song": "876543",
+    "difficulty": "Medium Demon",
+    "difficultyValue": 5,
+    "thumbnail": "https://i.imgur.com/UcC75Q6.png"
   },
   {
     "name": "The Nightmare",
     "author": "Jax",
-    "id": "202122",
-    "pass": "1010",
-    "song": "ID 114211",
-    "thumbnail": "https://i.imgur.com/YHZ0T1s.png",
-    "difficulty": 1,
-    "category": "Easy Demon"
+    "id": "765432",
+    "pass": "222222",
+    "song": "765432",
+    "difficulty": "Easy Demon",
+    "difficultyValue": 2,
+    "thumbnail": "https://i.imgur.com/UcC75Q6.png"
   }
 ]
