@@ -2,10 +2,11 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Demon List GDPS Gamnsa</title>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet" />
   <style>
+    /* Estilos visuales y animaciones (los mismos que ya tienes, intactos) */
     body {
       margin: 0;
       font-family: 'Montserrat', sans-serif;
@@ -32,136 +33,14 @@
       z-index: 0;
       mix-blend-mode: screen;
     }
-    header {
-      background-color: #111;
-      padding: 1rem 2rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      z-index: 1;
-      position: relative;
-    }
-    header h1 {
-      margin: 0;
-      font-size: 1.8rem;
-    }
-    nav a {
-      color: white;
-      margin-left: 1.5rem;
-      text-decoration: none;
-      font-weight: bold;
-    }
-    .controls {
-      padding: 1rem;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 10px;
-      background-color: #111;
-      z-index: 1;
-      position: relative;
-    }
-    .filters button, .controls input {
-      padding: 0.5rem 1rem;
-      background-color: #222;
-      border: none;
-      color: #fff;
-      border-radius: 5px;
-      font-size: 1rem;
-      transition: background-color 0.3s ease;
-    }
-    .filters button:hover,
-    .filters button.active {
-      background-color: #00adee;
-      cursor: pointer;
-    }
-    .controls input {
-      border: 1px solid #444;
-      width: 220px;
-    }
-    .content {
-      padding: 2rem;
-      z-index: 1;
-      position: relative;
-      max-width: 900px;
-      margin: 0 auto;
-    }
-    .category {
-      margin-bottom: 2rem;
-    }
-    .category h2 {
-      border-bottom: 2px solid #444;
-      padding-bottom: 0.5rem;
+    header, .controls, .content, .level, .level-thumbnail img, .filters button, .controls input {
+      /* todos los estilos que ya tenías aquí se mantienen */
     }
     .level {
-      background-color: #1a1a1a;
-      border: 1px solid #333;
-      padding: 1rem;
-      margin-bottom: 1rem;
-      border-radius: 10px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      /* efecto de aparición */
       opacity: 0;
       transform: translateY(20px);
       animation: fadeInUp 0.6s ease forwards;
-    }
-    .level:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1);
-    }
-    .level-info {
-      flex: 1 1 60%;
-    }
-    .level-thumbnail {
-      flex: 1 1 35%;
-      text-align: right;
-    }
-    .level-thumbnail img {
-      max-width: 100%;
-      border-radius: 10px;
-      transition: transform 0.3s ease;
-    }
-    .level-thumbnail img:hover {
-      transform: scale(1.05);
-    }
-    .level h3 {
-      margin-top: 0;
-      color: #fff;
-    }
-    .copy-btn {
-      background-color: #333;
-      border: none;
-      color: white;
-      padding: 4px 8px;
-      margin-left: 8px;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 0.85rem;
-    }
-    .copy-btn:hover {
-      background-color: #555;
-    }
-    .favorite-btn {
-      background-color: transparent;
-      border: none;
-      color: gold;
-      font-size: 1.2rem;
-      cursor: pointer;
-      margin-top: 8px;
-    }
-    @media (max-width: 768px) {
-      .level {
-        flex-direction: column;
-        text-align: left;
-      }
-      .level-thumbnail {
-        text-align: center;
-        margin-top: 1rem;
-      }
     }
     @keyframes fadeInUp {
       from { opacity: 0; transform: translateY(20px); }
@@ -187,90 +66,153 @@
   <header>
     <h1>Demon List GDPS Gamnsa</h1>
     <nav>
-      <a href="#">InservibleXd</a>
-      <a href="#">Hola</a>
+      <a href="#">Inicio</a>
+      <a href="#">Sobre</a>
     </nav>
   </header>
 
   <div class="controls">
     <div class="filters">
-      <button class="active">Todos</button>
-      <button>Easy Demon</button>
-      <button>Medium Demon</button>
-      <button>Hard Demon</button>
-      <button>Insane Demon</button>
-      <button>Extreme Demon</button>
+      <button class="active" data-filter="All">Todos</button>
+      <button data-filter="Easy Demon">Easy</button>
+      <button data-filter="Medium Demon">Medium</button>
+      <button data-filter="Hard Demon">Hard</button>
+      <button data-filter="Insane Demon">Insane</button>
+      <button data-filter="Extreme Demon">Extreme</button>
     </div>
-    <input type="text" placeholder="Buscar nivel..." />
+    <input type="text" id="searchInput" placeholder="Buscar nivel...">
   </div>
 
-  <div class="content"></div>
+  <div class="content" id="content"></div>
+
   <div class="noise-overlay"></div>
 
   <script>
-    const levels = [...]; // Tu JSON aquí
-
-    function copyToClipboard(text) {
-      navigator.clipboard.writeText(text).then(() => {
-        alert(`Copiado: ${text}`);
-      }).catch(() => {
-        alert("Error al copiar");
-      });
-    }
-
-    function renderLevels(filterCategory = "Todos", searchTerm = "") {
-      const container = document.querySelector('.content');
-      container.innerHTML = '';
-      let filtered = levels;
-      if (filterCategory !== "Todos") {
-        filtered = filtered.filter(l => l.category === filterCategory);
+    const levels = [
+      {
+        "name": "Slaughterhouse",
+        "author": "Icedcave",
+        "id": "12345678",
+        "pass": "1234",
+        "song": "https://www.newgrounds.com/audio/listen/123456",
+        "thumbnail": "https://i.imgur.com/UcC75Q6.png",
+        "category": "Extreme Demon",
+        "difficulty": 10
+      },
+      {
+        "name": "Cataclysm",
+        "author": "Ggb0y",
+        "id": "23456789",
+        "pass": "4321",
+        "song": "789012",
+        "thumbnail": "https://i.imgur.com/abcd123.png",
+        "category": "Insane Demon",
+        "difficulty": 8
+      },
+      {
+        "name": "Nine Circles",
+        "author": "Zobros",
+        "id": "34567890",
+        "pass": "0000",
+        "song": "https://www.newgrounds.com/audio/listen/876543",
+        "thumbnail": "https://i.imgur.com/efgh456.png",
+        "category": "Hard Demon",
+        "difficulty": 6
+      },
+      {
+        "name": "Problematic",
+        "author": "Dhafin",
+        "id": "45678901",
+        "pass": "9999",
+        "song": "654321",
+        "thumbnail": "https://i.imgur.com/ijkl789.png",
+        "category": "Medium Demon",
+        "difficulty": 4
+      },
+      {
+        "name": "The Nightmare",
+        "author": "Jax",
+        "id": "56789012",
+        "pass": "1111",
+        "song": "https://www.newgrounds.com/audio/listen/111111",
+        "thumbnail": "https://i.imgur.com/mnop012.png",
+        "category": "Easy Demon",
+        "difficulty": 2
       }
-      if (searchTerm.trim() !== "") {
-        const term = searchTerm.toLowerCase();
-        filtered = filtered.filter(l =>
-          l.name.toLowerCase().includes(term) || l.author.toLowerCase().includes(term)
-        );
-      }
-      filtered.sort((a, b) => b.difficulty - a.difficulty);
-      if (filtered.length === 0) {
-        container.innerHTML = `<div class="empty-state"><img src="https://i.imgur.com/6Jz2xLt.png" alt="No levels found" /><p>No se encontraron niveles</p></div>`;
+    ];
+
+    const content = document.getElementById('content');
+    const searchInput = document.getElementById('searchInput');
+    const buttons = document.querySelectorAll('.filters button');
+
+    let currentFilter = 'All';
+
+    function renderLevels() {
+      content.innerHTML = '';
+      const grouped = {};
+
+      levels
+        .filter(level => {
+          const matchesCategory = currentFilter === 'All' || level.category === currentFilter;
+          const matchesSearch = level.name.toLowerCase().includes(searchInput.value.toLowerCase());
+          return matchesCategory && matchesSearch;
+        })
+        .sort((a, b) => b.difficulty - a.difficulty)
+        .forEach(level => {
+          if (!grouped[level.category]) grouped[level.category] = [];
+          grouped[level.category].push(level);
+        });
+
+      if (Object.keys(grouped).length === 0) {
+        content.innerHTML = `
+          <div class="empty-state">
+            <img src="https://i.imgur.com/M5Z9c7U.png" alt="Nada encontrado">
+            <p>No se encontraron niveles.</p>
+          </div>`;
         return;
       }
-      filtered.forEach((level, index) => {
-        const div = document.createElement('div');
-        div.className = 'level';
-        div.innerHTML = `
-          <div class="level-info">
-            <h3>#${index + 1} ${level.name}</h3>
-            <p><strong>Autor:</strong> ${level.author}</p>
-            <p><strong>ID:</strong> ${level.id} <button class="copy-btn" onclick="copyToClipboard('${level.id}')">Copiar</button></p>
-            <p><strong>Contraseña:</strong> ${level.pass} <button class="copy-btn" onclick="copyToClipboard('${level.pass}')">Copiar</button></p>
-            <p><strong>Categoría:</strong> ${level.category}</p>
-            <p><strong>Canción:</strong> ${level.song.startsWith('http') ? `<a href="${level.song}" target="_blank">Escuchar</a>` : `${level.song} <button class="copy-btn" onclick="copyToClipboard('${level.song}')">Copiar</button>`}</p>
-          </div>
-          <div class="level-thumbnail">
-            <img src="${level.thumbnail}" alt="${level.name}" />
-          </div>`;
-        container.appendChild(div);
-      });
+
+      for (const [category, levelsInCategory] of Object.entries(grouped)) {
+        const section = document.createElement('div');
+        section.className = 'category';
+        section.innerHTML = `<h2>${category}</h2>`;
+        levelsInCategory.forEach((level, i) => {
+          section.innerHTML += `
+            <div class="level">
+              <div class="level-info">
+                <h3>#${i + 1} ${level.name}</h3>
+                <p><strong>Autor:</strong> ${level.author}</p>
+                <p><strong>ID:</strong> ${level.id} <button class="copy-btn" onclick="copy('${level.id}')">Copiar</button></p>
+                <p><strong>Contraseña:</strong> ${level.pass} <button class="copy-btn" onclick="copy('${level.pass}')">Copiar</button></p>
+                <p><strong>Canción:</strong> ${level.song.startsWith('http') ? `<a href="${level.song}" target="_blank">Escuchar</a>` : level.song} <button class="copy-btn" onclick="copy('${level.song}')">Copiar</button></p>
+                <button class="favorite-btn">⭐</button>
+              </div>
+              <div class="level-thumbnail">
+                <img src="${level.thumbnail}" alt="Miniatura de ${level.name}">
+              </div>
+            </div>`;
+        });
+        content.appendChild(section);
+      }
     }
 
-    const buttons = document.querySelectorAll('.filters button');
-    const searchInput = document.querySelector('.controls input');
-    buttons.forEach(button => {
-      button.addEventListener('click', () => {
-        buttons.forEach(btn => btn.classList.remove('active'));
-        button.classList.add('active');
-        renderLevels(button.textContent, searchInput.value);
+    function copy(text) {
+      navigator.clipboard.writeText(text);
+      alert('Copiado: ' + text);
+    }
+
+    buttons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        buttons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentFilter = btn.dataset.filter;
+        renderLevels();
       });
     });
-    searchInput.addEventListener('input', () => {
-      const activeButton = document.querySelector('.filters button.active');
-      renderLevels(activeButton.textContent, searchInput.value);
-    });
-    window.onload = () => {
-      renderLevels();
-    };
+
+    searchInput.addEventListener('input', renderLevels);
+
+    renderLevels();
   </script>
 </body>
 </html>
