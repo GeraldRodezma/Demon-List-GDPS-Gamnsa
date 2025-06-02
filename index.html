@@ -24,15 +24,21 @@
     }
 
     .noise-overlay {
-      pointer-events: none;
-      position: fixed;
-      top: 0; left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: url('https://i.imgur.com/8lKQO4I.png');
-      opacity: 0.035;
-      z-index: 0;
-      mix-blend-mode: screen;
+  pointer-events: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: repeating-linear-gradient(
+    45deg,
+    rgba(255,255,255,0.03) 0,
+    rgba(255,255,255,0.03) 1px,
+    transparent 1px,
+    transparent 2px
+  );
+  opacity: 0.15;
+  z-index: 0;
+  mix-blend-mode: screen;
     }
 
     header {
