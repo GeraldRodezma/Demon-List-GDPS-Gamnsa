@@ -3,10 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Demon List GDPS Gamnsa</title>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet" />
+  <title>Demon List GDPS</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet"/>
   <style>
-    /* Estilos visuales y animaciones (los mismos que ya tienes, intactos) */
     body {
       margin: 0;
       font-family: 'Montserrat', sans-serif;
@@ -17,11 +16,13 @@
       position: relative;
       overflow-x: hidden;
     }
+
     @keyframes gradientMove {
       0% {background-position: 0% 50%;}
       50% {background-position: 100% 50%;}
       100% {background-position: 0% 50%;}
     }
+
     .noise-overlay {
       pointer-events: none;
       position: fixed;
@@ -33,29 +34,166 @@
       z-index: 0;
       mix-blend-mode: screen;
     }
-    header, .controls, .content, .level, .level-thumbnail img, .filters button, .controls input {
-      /* todos los estilos que ya tenías aquí se mantienen */
+
+    header {
+      background-color: #111;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 1;
+      position: relative;
     }
+
+    header h1 { margin: 0; font-size: 1.8rem; }
+    nav a {
+      color: white;
+      margin-left: 1.5rem;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .controls {
+      padding: 1rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      background-color: #111;
+      z-index: 1;
+      position: relative;
+    }
+
+    .filters button, .controls input {
+      padding: 0.5rem 1rem;
+      background-color: #222;
+      border: none;
+      color: #fff;
+      border-radius: 5px;
+      font-size: 1rem;
+      transition: background-color 0.3s ease;
+    }
+
+    .filters button:hover,
+    .filters button.active {
+      background-color: #00adee;
+      cursor: pointer;
+    }
+
+    .controls input {
+      border: 1px solid #444;
+      width: 220px;
+    }
+
+    .content {
+      padding: 2rem;
+      z-index: 1;
+      position: relative;
+    }
+
+    .category {
+      margin-bottom: 2rem;
+    }
+
+    .category h2 {
+      border-bottom: 2px solid #444;
+      padding-bottom: 0.5rem;
+    }
+
     .level {
-      /* efecto de aparición */
+      background-color: #1a1a1a;
+      border: 1px solid #333;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      border-radius: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
       opacity: 0;
       transform: translateY(20px);
       animation: fadeInUp 0.6s ease forwards;
     }
+
+    .level:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1);
+    }
+
+    .level-info { flex: 1 1 60%; }
+    .level-thumbnail {
+      flex: 1 1 35%;
+      text-align: right;
+    }
+
+    .level-thumbnail img {
+      max-width: 100%;
+      border-radius: 10px;
+      transition: transform 0.3s ease;
+    }
+
+    .level-thumbnail img:hover {
+      transform: scale(1.05);
+    }
+
+    .level h3 {
+      margin-top: 0;
+      color: #fff;
+    }
+
+    .copy-btn {
+      background-color: #333;
+      border: none;
+      color: white;
+      padding: 4px 8px;
+      margin-left: 8px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.85rem;
+    }
+
+    .copy-btn:hover {
+      background-color: #555;
+    }
+
+    .favorite-btn {
+      background-color: transparent;
+      border: none;
+      color: gold;
+      font-size: 1.2rem;
+      cursor: pointer;
+      margin-top: 8px;
+    }
+
+    @media (max-width: 768px) {
+      .level {
+        flex-direction: column;
+        text-align: left;
+      }
+      .level-thumbnail {
+        text-align: center;
+        margin-top: 1rem;
+      }
+    }
+
     @keyframes fadeInUp {
       from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
     }
+
     .empty-state {
       text-align: center;
       padding: 3rem 1rem;
       opacity: 0.7;
     }
+
     .empty-state img {
       max-width: 150px;
       margin-bottom: 1rem;
       animation: float 2s ease-in-out infinite;
     }
+
     @keyframes float {
       0%, 100% { transform: translateY(0px); }
       50% { transform: translateY(-10px); }
@@ -64,7 +202,7 @@
 </head>
 <body>
   <header>
-    <h1>Demon List GDPS Gamnsa</h1>
+    <h1>Demon List GDPS</h1>
     <nav>
       <a href="#">Inicio</a>
       <a href="#">Sobre</a>
@@ -73,18 +211,17 @@
 
   <div class="controls">
     <div class="filters">
-      <button class="active" data-filter="All">Todos</button>
-      <button data-filter="Easy Demon">Easy</button>
-      <button data-filter="Medium Demon">Medium</button>
-      <button data-filter="Hard Demon">Hard</button>
-      <button data-filter="Insane Demon">Insane</button>
-      <button data-filter="Extreme Demon">Extreme</button>
+      <button class="active" data-category="all">Todos</button>
+      <button data-category="Easy Demon">Easy</button>
+      <button data-category="Medium Demon">Medium</button>
+      <button data-category="Hard Demon">Hard</button>
+      <button data-category="Insane Demon">Insane</button>
+      <button data-category="Extreme Demon">Extreme</button>
     </div>
-    <input type="text" id="searchInput" placeholder="Buscar nivel...">
+    <input type="text" id="search" placeholder="Buscar nivel...">
   </div>
 
-  <div class="content" id="content"></div>
-
+  <div class="content" id="levels-container"></div>
   <div class="noise-overlay"></div>
 
   <script>
@@ -141,76 +278,78 @@
       }
     ];
 
-    const content = document.getElementById('content');
-    const searchInput = document.getElementById('searchInput');
-    const buttons = document.querySelectorAll('.filters button');
+    const favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
+    const container = document.getElementById("levels-container");
+    const searchInput = document.getElementById("search");
 
-    let currentFilter = 'All';
-
-    function renderLevels() {
-      content.innerHTML = '';
+    function renderLevels(filterCategory = "all", search = "") {
+      container.innerHTML = "";
       const grouped = {};
+      levels.forEach(lvl => {
+        if (!grouped[lvl.category]) grouped[lvl.category] = [];
+        grouped[lvl.category].push(lvl);
+      });
 
-      levels
-        .filter(level => {
-          const matchesCategory = currentFilter === 'All' || level.category === currentFilter;
-          const matchesSearch = level.name.toLowerCase().includes(searchInput.value.toLowerCase());
-          return matchesCategory && matchesSearch;
-        })
-        .sort((a, b) => b.difficulty - a.difficulty)
-        .forEach(level => {
-          if (!grouped[level.category]) grouped[level.category] = [];
-          grouped[level.category].push(level);
+      for (const category in grouped) {
+        let filtered = grouped[category]
+          .filter(lvl => (filterCategory === "all" || lvl.category === filterCategory) &&
+                         lvl.name.toLowerCase().includes(search.toLowerCase()))
+          .sort((a, b) => b.difficulty - a.difficulty);
+
+        if (filtered.length === 0) continue;
+
+        const catDiv = document.createElement("div");
+        catDiv.className = "category";
+        catDiv.innerHTML = `<h2>${category}</h2>`;
+        filtered.forEach((lvl, i) => {
+          const isFav = favorites.includes(lvl.id);
+          const levelEl = document.createElement("div");
+          levelEl.className = "level";
+          levelEl.innerHTML = `
+            <div class="level-info">
+              <h3>#${i + 1} ${lvl.name}</h3>
+              <p><strong>Autor:</strong> ${lvl.author}</p>
+              <p><strong>ID:</strong> ${lvl.id} <button class="copy-btn" onclick="copyToClipboard('${lvl.id}')">Copiar</button></p>
+              <p><strong>Contraseña:</strong> ${lvl.pass} <button class="copy-btn" onclick="copyToClipboard('${lvl.pass}')">Copiar</button></p>
+              <p><strong>Canción:</strong> <a href="${lvl.song}" target="_blank">${lvl.song}</a></p>
+              <button class="favorite-btn" onclick="toggleFavorite('${lvl.id}')">${isFav ? '★' : '☆'}</button>
+            </div>
+            <div class="level-thumbnail"><img src="${lvl.thumbnail}" alt="${lvl.name}"></div>
+          `;
+          catDiv.appendChild(levelEl);
         });
 
-      if (Object.keys(grouped).length === 0) {
-        content.innerHTML = `
-          <div class="empty-state">
-            <img src="https://i.imgur.com/M5Z9c7U.png" alt="Nada encontrado">
-            <p>No se encontraron niveles.</p>
-          </div>`;
-        return;
-      }
-
-      for (const [category, levelsInCategory] of Object.entries(grouped)) {
-        const section = document.createElement('div');
-        section.className = 'category';
-        section.innerHTML = `<h2>${category}</h2>`;
-        levelsInCategory.forEach((level, i) => {
-          section.innerHTML += `
-            <div class="level">
-              <div class="level-info">
-                <h3>#${i + 1} ${level.name}</h3>
-                <p><strong>Autor:</strong> ${level.author}</p>
-                <p><strong>ID:</strong> ${level.id} <button class="copy-btn" onclick="copy('${level.id}')">Copiar</button></p>
-                <p><strong>Contraseña:</strong> ${level.pass} <button class="copy-btn" onclick="copy('${level.pass}')">Copiar</button></p>
-                <p><strong>Canción:</strong> ${level.song.startsWith('http') ? `<a href="${level.song}" target="_blank">Escuchar</a>` : level.song} <button class="copy-btn" onclick="copy('${level.song}')">Copiar</button></p>
-                <button class="favorite-btn">⭐</button>
-              </div>
-              <div class="level-thumbnail">
-                <img src="${level.thumbnail}" alt="Miniatura de ${level.name}">
-              </div>
-            </div>`;
-        });
-        content.appendChild(section);
+        container.appendChild(catDiv);
       }
     }
 
-    function copy(text) {
+    function toggleFavorite(id) {
+      const idx = favorites.indexOf(id);
+      if (idx >= 0) favorites.splice(idx, 1);
+      else favorites.push(id);
+      localStorage.setItem("favorites", JSON.stringify(favorites));
+      renderLevels(currentFilter, searchInput.value);
+    }
+
+    function copyToClipboard(text) {
       navigator.clipboard.writeText(text);
-      alert('Copiado: ' + text);
+      alert(`Copiado: ${text}`);
     }
 
-    buttons.forEach(btn => {
-      btn.addEventListener('click', () => {
-        buttons.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        currentFilter = btn.dataset.filter;
-        renderLevels();
+    let currentFilter = "all";
+
+    document.querySelectorAll(".filters button").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".filters button").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        currentFilter = btn.getAttribute("data-category");
+        renderLevels(currentFilter, searchInput.value);
       });
     });
 
-    searchInput.addEventListener('input', renderLevels);
+    searchInput.addEventListener("input", () => {
+      renderLevels(currentFilter, searchInput.value);
+    });
 
     renderLevels();
   </script>
