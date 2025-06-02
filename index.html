@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Demon List GDPS</title>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet" />
   <style>
     body {
       margin: 0;
@@ -16,13 +16,11 @@
       position: relative;
       overflow-x: hidden;
     }
-
     @keyframes gradientMove {
       0% {background-position: 0% 50%;}
       50% {background-position: 100% 50%;}
       100% {background-position: 0% 50%;}
     }
-
     .noise-overlay {
       pointer-events: none;
       position: fixed;
@@ -34,7 +32,6 @@
       z-index: 0;
       mix-blend-mode: screen;
     }
-
     header {
       background-color: #111;
       padding: 1rem 2rem;
@@ -55,7 +52,6 @@
       text-decoration: none;
       font-weight: bold;
     }
-
     .controls {
       padding: 1rem;
       display: flex;
@@ -66,7 +62,6 @@
       z-index: 1;
       position: relative;
     }
-
     .filters button, .controls input {
       padding: 0.5rem 1rem;
       background-color: #222;
@@ -76,33 +71,29 @@
       font-size: 1rem;
       transition: background-color 0.3s ease;
     }
-
     .filters button:hover,
     .filters button.active {
       background-color: #00adee;
       cursor: pointer;
     }
-
     .controls input {
       border: 1px solid #444;
       width: 220px;
     }
-
     .content {
       padding: 2rem;
       z-index: 1;
       position: relative;
+      max-width: 900px;
+      margin: 0 auto;
     }
-
     .category {
       margin-bottom: 2rem;
     }
-
     .category h2 {
       border-bottom: 2px solid #444;
       padding-bottom: 0.5rem;
     }
-
     .level {
       background-color: #1a1a1a;
       border: 1px solid #333;
@@ -118,36 +109,29 @@
       transform: translateY(20px);
       animation: fadeInUp 0.6s ease forwards;
     }
-
     .level:hover {
       transform: translateY(-4px);
       box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1);
     }
-
     .level-info {
       flex: 1 1 60%;
     }
-
     .level-thumbnail {
       flex: 1 1 35%;
       text-align: right;
     }
-
     .level-thumbnail img {
       max-width: 100%;
       border-radius: 10px;
       transition: transform 0.3s ease;
     }
-
     .level-thumbnail img:hover {
       transform: scale(1.05);
     }
-
     .level h3 {
       margin-top: 0;
       color: #fff;
     }
-
     .copy-btn {
       background-color: #333;
       border: none;
@@ -158,11 +142,9 @@
       cursor: pointer;
       font-size: 0.85rem;
     }
-
     .copy-btn:hover {
       background-color: #555;
     }
-
     .favorite-btn {
       background-color: transparent;
       border: none;
@@ -171,7 +153,6 @@
       cursor: pointer;
       margin-top: 8px;
     }
-
     @media (max-width: 768px) {
       .level {
         flex-direction: column;
@@ -182,24 +163,20 @@
         margin-top: 1rem;
       }
     }
-
     @keyframes fadeInUp {
       from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
     }
-
     .empty-state {
       text-align: center;
       padding: 3rem 1rem;
       opacity: 0.7;
     }
-
     .empty-state img {
       max-width: 150px;
       margin-bottom: 1rem;
       animation: float 2s ease-in-out infinite;
     }
-
     @keyframes float {
       0%, 100% { transform: translateY(0px); }
       50% { transform: translateY(-10px); }
@@ -218,23 +195,163 @@
   <div class="controls">
     <div class="filters">
       <button class="active">Todos</button>
-      <button>Easy</button>
-      <button>Medium</button>
-      <button>Hard</button>
-      <button>Insane</button>
-      <button>Extreme</button>
+      <button>Easy Demon</button>
+      <button>Medium Demon</button>
+      <button>Hard Demon</button>
+      <button>Insane Demon</button>
+      <button>Extreme Demon</button>
     </div>
-    <input type="text" placeholder="Buscar nivel...">
+    <input type="text" placeholder="Buscar nivel..." />
   </div>
 
   <div class="content">
-    <!-- Niveles renderizados aquí -->
+    <!-- Aquí se renderizan los niveles -->
   </div>
 
   <div class="noise-overlay"></div>
 
   <script>
-    // Aquí iría tu código JavaScript con el renderLevels actualizado para incluir empty-state
+    const levels = [
+      {
+        "name": "Slaughterhouse",
+        "author": "Icedcave",
+        "id": "12345678",
+        "pass": "1234",
+        "song": "https://www.newgrounds.com/audio/listen/123456",
+        "thumbnail": "https://i.imgur.com/UcC75Q6.png",
+        "category": "Extreme Demon",
+        "difficulty": 10
+      },
+      {
+        "name": "Cataclysm",
+        "author": "Ggb0y",
+        "id": "23456789",
+        "pass": "4321",
+        "song": "789012",
+        "thumbnail": "https://i.imgur.com/abcd123.png",
+        "category": "Insane Demon",
+        "difficulty": 8
+      },
+      {
+        "name": "Nine Circles",
+        "author": "Zobros",
+        "id": "34567890",
+        "pass": "0000",
+        "song": "https://www.newgrounds.com/audio/listen/876543",
+        "thumbnail": "https://i.imgur.com/efgh456.png",
+        "category": "Hard Demon",
+        "difficulty": 6
+      },
+      {
+        "name": "Problematic",
+        "author": "Dhafin",
+        "id": "45678901",
+        "pass": "9999",
+        "song": "654321",
+        "thumbnail": "https://i.imgur.com/ijkl789.png",
+        "category": "Medium Demon",
+        "difficulty": 4
+      },
+      {
+        "name": "The Nightmare",
+        "author": "Jax",
+        "id": "56789012",
+        "pass": "1111",
+        "song": "https://www.newgrounds.com/audio/listen/111111",
+        "thumbnail": "https://i.imgur.com/mnop012.png",
+        "category": "Easy Demon",
+        "difficulty": 2
+      }
+    ];
+
+    // Copiar al portapapeles con alerta
+    function copyToClipboard(text) {
+      navigator.clipboard.writeText(text).then(() => {
+        alert(`Copiado: ${text}`);
+      }).catch(() => {
+        alert("Error al copiar");
+      });
+    }
+
+    // Renderizar niveles en el contenedor
+    function renderLevels(filterCategory = "Todos", searchTerm = "") {
+      const container = document.querySelector('.content');
+      container.innerHTML = '';
+
+      // Filtrar por categoría (si no es "Todos")
+      let filtered = levels;
+      if (filterCategory !== "Todos") {
+        filtered = filtered.filter(l => l.category === filterCategory);
+      }
+
+      // Filtrar por búsqueda (nombre o autor)
+      if (searchTerm.trim() !== "") {
+        const term = searchTerm.toLowerCase();
+        filtered = filtered.filter(l =>
+          l.name.toLowerCase().includes(term) || l.author.toLowerCase().includes(term)
+        );
+      }
+
+      // Ordenar por dificultad descendente
+      filtered.sort((a, b) => b.difficulty - a.difficulty);
+
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <img src="https://i.imgur.com/6Jz2xLt.png" alt="No levels found" />
+            <p>No se encontraron niveles</p>
+          </div>
+        `;
+        return;
+      }
+
+      filtered.forEach(level => {
+        const div = document.createElement('div');
+        div.className = 'level';
+        div.innerHTML = `
+          <div class="level-info">
+            <h3>${level.name}</h3>
+            <p><strong>Autor:</strong> ${level.author}</p>
+            <p><strong>ID:</strong> ${level.id} <button class="copy-btn" onclick="copyToClipboard('${level.id}')">Copiar</button></p>
+            <p><strong>Contraseña:</strong> ${level.pass} <button class="copy-btn" onclick="copyToClipboard('${level.pass}')">Copiar</button></p>
+            <p><strong>Categoría:</strong> ${level.category}</p>
+            <p><strong>Canción:</strong> 
+              ${
+                level.song.startsWith('http') 
+                  ? `<a href="${level.song}" target="_blank" rel="noopener noreferrer">Escuchar</a>` 
+                  : `${level.song} <button class="copy-btn" onclick="copyToClipboard('${level.song}')">Copiar</button>`
+              }
+            </p>
+          </div>
+          <div class="level-thumbnail">
+            <img src="${level.thumbnail}" alt="${level.name}" />
+          </div>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    // Configurar filtros por categoría y búsqueda
+    const buttons = document.querySelectorAll('.filters button');
+    const searchInput = document.querySelector('.controls input');
+
+    buttons.forEach(button => {
+      button.addEventListener('click', () => {
+        buttons.forEach(btn => btn.classList.remove('active'));
+        button.classList.add('active');
+        renderLevels(button.textContent, searchInput.value);
+      });
+    });
+
+    searchInput.addEventListener('input', () => {
+      const activeButton = document.querySelector('.filters button.active');
+      renderLevels(activeButton.textContent, searchInput.value);
+    });
+
+    // Render inicial (todos)
+    window.onload = () => {
+      renderLevels();
+    };
   </script>
 </body>
 </html>
