@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Demon List GDPS</title>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
   <style>
     body {
       margin: 0;
@@ -41,11 +41,16 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      flex-wrap: wrap;
       z-index: 1;
       position: relative;
     }
 
-    header h1 { margin: 0; font-size: 1.8rem; }
+    header h1 {
+      margin: 0;
+      font-size: 1.8rem;
+    }
+
     nav a {
       color: white;
       margin-left: 1.5rem;
@@ -121,7 +126,10 @@
       box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1);
     }
 
-    .level-info { flex: 1 1 60%; }
+    .level-info {
+      flex: 1 1 60%;
+    }
+
     .level-thumbnail {
       flex: 1 1 35%;
       text-align: right;
@@ -170,10 +178,19 @@
       .level {
         flex-direction: column;
         text-align: left;
+        align-items: flex-start;
       }
+
       .level-thumbnail {
-        text-align: center;
+        text-align: left;
         margin-top: 1rem;
+        width: 100%;
+      }
+
+      .level-thumbnail img {
+        max-width: 100%;
+        display: block;
+        margin: 0 auto 0 0;
       }
     }
 
@@ -198,6 +215,12 @@
       0%, 100% { transform: translateY(0px); }
       50% { transform: translateY(-10px); }
     }
+
+    .level-rank {
+      font-weight: bold;
+      margin-right: 0.5rem;
+      color: #00adee;
+    }
   </style>
 </head>
 <body>
@@ -211,17 +234,20 @@
 
   <div class="controls">
     <div class="filters">
-      <button class="active" data-category="all">Todos</button>
-      <button data-category="Easy Demon">Easy</button>
-      <button data-category="Medium Demon">Medium</button>
-      <button data-category="Hard Demon">Hard</button>
-      <button data-category="Insane Demon">Insane</button>
-      <button data-category="Extreme Demon">Extreme</button>
+      <button class="active">Todos</button>
+      <button>Easy</button>
+      <button>Medium</button>
+      <button>Hard</button>
+      <button>Insane</button>
+      <button>Extreme</button>
     </div>
-    <input type="text" id="search" placeholder="Buscar nivel...">
+    <input type="text" placeholder="Buscar nivel..." id="searchInput">
   </div>
 
-  <div class="content" id="levels-container"></div>
+  <div class="content" id="levelContainer">
+    <!-- Niveles se insertan aquí -->
+  </div>
+
   <div class="noise-overlay"></div>
 
   <script>
@@ -278,77 +304,66 @@
       }
     ];
 
-    const favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
-    const container = document.getElementById("levels-container");
-    const searchInput = document.getElementById("search");
+    const container = document.getElementById('levelContainer');
+    const filterButtons = document.querySelectorAll('.filters button');
+    const searchInput = document.getElementById('searchInput');
 
-    function renderLevels(filterCategory = "all", search = "") {
-      container.innerHTML = "";
+    function renderLevels(filter = "Todos", search = "") {
+      container.innerHTML = '';
       const grouped = {};
-      levels.forEach(lvl => {
-        if (!grouped[lvl.category]) grouped[lvl.category] = [];
-        grouped[lvl.category].push(lvl);
-      });
 
-      for (const category in grouped) {
-        let filtered = grouped[category]
-          .filter(lvl => (filterCategory === "all" || lvl.category === filterCategory) &&
-                         lvl.name.toLowerCase().includes(search.toLowerCase()))
-          .sort((a, b) => b.difficulty - a.difficulty);
-
-        if (filtered.length === 0) continue;
-
-        const catDiv = document.createElement("div");
-        catDiv.className = "category";
-        catDiv.innerHTML = `<h2>${category}</h2>`;
-        filtered.forEach((lvl, i) => {
-          const isFav = favorites.includes(lvl.id);
-          const levelEl = document.createElement("div");
-          levelEl.className = "level";
-          levelEl.innerHTML = `
-            <div class="level-info">
-              <h3>#${i + 1} ${lvl.name}</h3>
-              <p><strong>Autor:</strong> ${lvl.author}</p>
-              <p><strong>ID:</strong> ${lvl.id} <button class="copy-btn" onclick="copyToClipboard('${lvl.id}')">Copiar</button></p>
-              <p><strong>Contraseña:</strong> ${lvl.pass} <button class="copy-btn" onclick="copyToClipboard('${lvl.pass}')">Copiar</button></p>
-              <p><strong>Canción:</strong> <a href="${lvl.song}" target="_blank">${lvl.song}</a></p>
-              <button class="favorite-btn" onclick="toggleFavorite('${lvl.id}')">${isFav ? '★' : '☆'}</button>
-            </div>
-            <div class="level-thumbnail"><img src="${lvl.thumbnail}" alt="${lvl.name}"></div>
-          `;
-          catDiv.appendChild(levelEl);
+      // Agrupar niveles por categoría
+      levels
+        .filter(lvl => filter === "Todos" || lvl.category.includes(filter))
+        .filter(lvl => lvl.name.toLowerCase().includes(search.toLowerCase()))
+        .sort((a, b) => b.difficulty - a.difficulty)
+        .forEach(lvl => {
+          const category = lvl.category;
+          if (!grouped[category]) grouped[category] = [];
+          grouped[category].push(lvl);
         });
 
-        container.appendChild(catDiv);
+      for (const category in grouped) {
+        const section = document.createElement('div');
+        section.className = 'category';
+        const title = document.createElement('h2');
+        title.textContent = category;
+        section.appendChild(title);
+
+        grouped[category].forEach((lvl, index) => {
+          const div = document.createElement('div');
+          div.className = 'level';
+
+          div.innerHTML = `
+            <div class="level-info">
+              <h3><span class="level-rank">#${index + 1}</span> ${lvl.name}</h3>
+              <p><strong>Autor:</strong> ${lvl.author}</p>
+              <p><strong>ID:</strong> ${lvl.id} <button class="copy-btn" onclick="navigator.clipboard.writeText('${lvl.id}')">Copiar</button></p>
+              <p><strong>Contraseña:</strong> ${lvl.pass} <button class="copy-btn" onclick="navigator.clipboard.writeText('${lvl.pass}')">Copiar</button></p>
+              <p><strong>Canción:</strong> ${isNaN(lvl.song) ? `<a href="${lvl.song}" target="_blank">Escuchar</a>` : lvl.song}</p>
+            </div>
+            <div class="level-thumbnail">
+              <img src="${lvl.thumbnail}" alt="${lvl.name}">
+            </div>
+          `;
+          section.appendChild(div);
+        });
+
+        container.appendChild(section);
       }
     }
 
-    function toggleFavorite(id) {
-      const idx = favorites.indexOf(id);
-      if (idx >= 0) favorites.splice(idx, 1);
-      else favorites.push(id);
-      localStorage.setItem("favorites", JSON.stringify(favorites));
-      renderLevels(currentFilter, searchInput.value);
-    }
-
-    function copyToClipboard(text) {
-      navigator.clipboard.writeText(text);
-      alert(`Copiado: ${text}`);
-    }
-
-    let currentFilter = "all";
-
-    document.querySelectorAll(".filters button").forEach(btn => {
-      btn.addEventListener("click", () => {
-        document.querySelectorAll(".filters button").forEach(b => b.classList.remove("active"));
-        btn.classList.add("active");
-        currentFilter = btn.getAttribute("data-category");
-        renderLevels(currentFilter, searchInput.value);
+    filterButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelector('.filters .active')?.classList.remove('active');
+        btn.classList.add('active');
+        renderLevels(btn.textContent, searchInput.value);
       });
     });
 
-    searchInput.addEventListener("input", () => {
-      renderLevels(currentFilter, searchInput.value);
+    searchInput.addEventListener('input', () => {
+      const activeFilter = document.querySelector('.filters .active')?.textContent || "Todos";
+      renderLevels(activeFilter, searchInput.value);
     });
 
     renderLevels();
