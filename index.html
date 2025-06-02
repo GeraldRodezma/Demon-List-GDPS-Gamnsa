@@ -1,18 +1,40 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Demon List GDPS</title>
-  <link rel="icon" type="image/x-icon" href="AREDLCircle.ico">
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
   <style>
     body {
       margin: 0;
       font-family: 'Montserrat', sans-serif;
-      background-color: #0e0e0e;
+      background: linear-gradient(-45deg, #0e0e0e, #1a1a1a, #111, #0e0e0e);
+      background-size: 400% 400%;
+      animation: gradientMove 20s ease infinite;
       color: #fff;
+      position: relative;
+      overflow-x: hidden;
     }
+
+    @keyframes gradientMove {
+      0% {background-position: 0% 50%;}
+      50% {background-position: 100% 50%;}
+      100% {background-position: 0% 50%;}
+    }
+
+    .noise-overlay {
+      pointer-events: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: url('https://i.imgur.com/8lKQO4I.png');
+      opacity: 0.035;
+      z-index: 0;
+      mix-blend-mode: screen;
+    }
+
     header {
       background-color: #111;
       padding: 1rem 2rem;
@@ -20,6 +42,8 @@
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
+      z-index: 1;
+      position: relative;
     }
     header h1 {
       margin: 0;
@@ -39,7 +63,10 @@
       justify-content: center;
       gap: 10px;
       background-color: #111;
+      z-index: 1;
+      position: relative;
     }
+
     .filters button, .controls input {
       padding: 0.5rem 1rem;
       background-color: #222;
@@ -49,11 +76,13 @@
       font-size: 1rem;
       transition: background-color 0.3s ease;
     }
+
     .filters button:hover,
     .filters button.active {
       background-color: #00adee;
       cursor: pointer;
     }
+
     .controls input {
       border: 1px solid #444;
       width: 220px;
@@ -61,14 +90,19 @@
 
     .content {
       padding: 2rem;
+      z-index: 1;
+      position: relative;
     }
+
     .category {
       margin-bottom: 2rem;
     }
+
     .category h2 {
       border-bottom: 2px solid #444;
       padding-bottom: 0.5rem;
     }
+
     .level {
       background-color: #1a1a1a;
       border: 1px solid #333;
@@ -84,29 +118,36 @@
       transform: translateY(20px);
       animation: fadeInUp 0.6s ease forwards;
     }
+
     .level:hover {
       transform: translateY(-4px);
       box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1);
     }
+
     .level-info {
       flex: 1 1 60%;
     }
+
     .level-thumbnail {
       flex: 1 1 35%;
       text-align: right;
     }
+
     .level-thumbnail img {
       max-width: 100%;
       border-radius: 10px;
       transition: transform 0.3s ease;
     }
+
     .level-thumbnail img:hover {
       transform: scale(1.05);
     }
+
     .level h3 {
       margin-top: 0;
       color: #fff;
     }
+
     .copy-btn {
       background-color: #333;
       border: none;
@@ -117,9 +158,11 @@
       cursor: pointer;
       font-size: 0.85rem;
     }
+
     .copy-btn:hover {
       background-color: #555;
     }
+
     .favorite-btn {
       background-color: transparent;
       border: none;
@@ -128,6 +171,7 @@
       cursor: pointer;
       margin-top: 8px;
     }
+
     @media (max-width: 768px) {
       .level {
         flex-direction: column;
@@ -138,138 +182,59 @@
         margin-top: 1rem;
       }
     }
+
     @keyframes fadeInUp {
       from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 3rem 1rem;
+      opacity: 0.7;
+    }
+
+    .empty-state img {
+      max-width: 150px;
+      margin-bottom: 1rem;
+      animation: float 2s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
     }
   </style>
 </head>
 <body>
   <header>
     <h1>Demon List GDPS</h1>
-    <nav><a href="#">Inicio</a></nav>
+    <nav>
+      <a href="#">Inicio</a>
+      <a href="#">Sobre</a>
+    </nav>
   </header>
 
   <div class="controls">
-    <div class="filters" id="filterButtons">
-      <button data-filter="all" class="active">Todos</button>
-      <button data-filter="Easy Demon">Easy</button>
-      <button data-filter="Medium Demon">Medium</button>
-      <button data-filter="Hard Demon">Hard</button>
-      <button data-filter="Insane Demon">Insane</button>
-      <button data-filter="Extreme Demon">Extreme</button>
-      <button data-filter="favorites">⭐ Favoritos</button>
+    <div class="filters">
+      <button class="active">Todos</button>
+      <button>Easy</button>
+      <button>Medium</button>
+      <button>Hard</button>
+      <button>Insane</button>
+      <button>Extreme</button>
     </div>
-    <input type="text" id="searchInput" placeholder="Buscar nivel o autor...">
+    <input type="text" placeholder="Buscar nivel...">
   </div>
 
-  <div class="content" id="levels"></div>
+  <div class="content">
+    <!-- Niveles renderizados aquí -->
+  </div>
+
+  <div class="noise-overlay"></div>
 
   <script>
-    let allLevels = [];
-    let favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
-
-    fetch('levels.json')
-      .then(response => response.json())
-      .then(data => {
-        allLevels = data;
-        renderLevels("all");
-      });
-
-    function renderLevels(filter, searchTerm = "") {
-      const container = document.getElementById("levels");
-      container.innerHTML = "";
-
-      const categories = ["Extreme Demon", "Insane Demon", "Hard Demon", "Medium Demon", "Easy Demon"];
-      const visibleLevels = allLevels.filter(level => {
-        const matchCategory = filter === "all" || filter === level.category || (filter === "favorites" && favorites.includes(level.id));
-        const matchSearch = level.name.toLowerCase().includes(searchTerm) || level.author.toLowerCase().includes(searchTerm);
-        return matchCategory && matchSearch;
-      });
-
-      const levelsByCategory = {};
-      categories.forEach(cat => levelsByCategory[cat] = []);
-
-      visibleLevels.forEach(level => {
-        if (levelsByCategory[level.category]) {
-          levelsByCategory[level.category].push(level);
-        }
-      });
-
-      for (const category of categories) {
-        const categoryLevels = levelsByCategory[category];
-        if (!categoryLevels.length) continue;
-
-        // Ordenar de más difícil a más fácil
-        categoryLevels.sort((a, b) => b.difficulty - a.difficulty);
-
-        const section = document.createElement("div");
-        section.className = "category";
-        section.innerHTML = `<h2>${category}</h2>`;
-
-        categoryLevels.forEach((level, index) => {
-          const number = index + 1;
-          const div = document.createElement("div");
-          div.className = "level";
-          div.style.animationDelay = `${index * 0.1}s`;
-
-          const isLink = level.song.startsWith("http");
-          const songHTML = isLink
-            ? `<a href="${level.song}" target="_blank" style="color: #00adee;">Escuchar canción</a>`
-            : `${level.song} <button class="copy-btn" onclick="copyToClipboard('${level.song}')">Copiar ID</button>`;
-
-          const favText = favorites.includes(level.id) ? "⭐ Quitar de favoritos" : "☆ Añadir a favoritos";
-
-          div.innerHTML = `
-            <div class="level-info">
-              <h3>#${number} - ${level.name}</h3>
-              <p><strong>Autor:</strong> ${level.author}</p>
-              <p><strong>ID:</strong> ${level.id} <button class="copy-btn" onclick="copyToClipboard('${level.id}')">Copiar</button></p>
-              <p><strong>Contraseña:</strong> ${level.pass}</p>
-              <p><strong>Canción:</strong> ${songHTML}</p>
-              <button class="favorite-btn" onclick="toggleFavorite('${level.id}', this)">${favText}</button>
-            </div>
-            <div class="level-thumbnail">
-              <img src="${level.thumbnail}" alt="${level.name}">
-            </div>
-          `;
-          section.appendChild(div);
-        });
-
-        container.appendChild(section);
-      }
-    }
-
-    function copyToClipboard(text) {
-      navigator.clipboard.writeText(text).then(() => alert("Copiado: " + text));
-    }
-
-    function toggleFavorite(id, btn) {
-      if (favorites.includes(id)) {
-        favorites = favorites.filter(f => f !== id);
-        btn.innerText = "☆ Añadir a favoritos";
-      } else {
-        favorites.push(id);
-        btn.innerText = "⭐ Quitar de favoritos";
-      }
-      localStorage.setItem("favorites", JSON.stringify(favorites));
-    }
-
-    document.querySelectorAll("#filterButtons button").forEach(btn => {
-      btn.addEventListener("click", () => {
-        document.querySelectorAll("#filterButtons button").forEach(b => b.classList.remove("active"));
-        btn.classList.add("active");
-        const filter = btn.getAttribute("data-filter");
-        const term = document.getElementById("searchInput").value.toLowerCase();
-        renderLevels(filter, term);
-      });
-    });
-
-    document.getElementById("searchInput").addEventListener("input", e => {
-      const searchTerm = e.target.value.toLowerCase();
-      const activeFilter = document.querySelector("#filterButtons .active").getAttribute("data-filter");
-      renderLevels(activeFilter, searchTerm);
-    });
+    // Aquí iría tu código JavaScript con el renderLevels actualizado para incluir empty-state
   </script>
 </body>
 </html>
