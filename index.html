@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Demon List GDPS</title>
+  <title>Demon List GDPS Gamnsa</title>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet" />
   <style>
     body {
@@ -185,10 +185,10 @@
 </head>
 <body>
   <header>
-    <h1>Demon List GDPS</h1>
+    <h1>Demon List GDPS Gamnsa</h1>
     <nav>
-      <a href="#">Inicio</a>
-      <a href="#">Sobre</a>
+      <a href="#">InservibleXd</a>
+      <a href="#">Hola</a>
     </nav>
   </header>
 
@@ -204,67 +204,12 @@
     <input type="text" placeholder="Buscar nivel..." />
   </div>
 
-  <div class="content">
-    <!-- Aquí se renderizan los niveles -->
-  </div>
-
+  <div class="content"></div>
   <div class="noise-overlay"></div>
 
   <script>
-    const levels = [
-      {
-        "name": "Slaughterhouse",
-        "author": "Icedcave",
-        "id": "12345678",
-        "pass": "1234",
-        "song": "https://www.newgrounds.com/audio/listen/123456",
-        "thumbnail": "https://i.imgur.com/UcC75Q6.png",
-        "category": "Extreme Demon",
-        "difficulty": 10
-      },
-      {
-        "name": "Cataclysm",
-        "author": "Ggb0y",
-        "id": "23456789",
-        "pass": "4321",
-        "song": "789012",
-        "thumbnail": "https://i.imgur.com/abcd123.png",
-        "category": "Insane Demon",
-        "difficulty": 8
-      },
-      {
-        "name": "Nine Circles",
-        "author": "Zobros",
-        "id": "34567890",
-        "pass": "0000",
-        "song": "https://www.newgrounds.com/audio/listen/876543",
-        "thumbnail": "https://i.imgur.com/efgh456.png",
-        "category": "Hard Demon",
-        "difficulty": 6
-      },
-      {
-        "name": "Problematic",
-        "author": "Dhafin",
-        "id": "45678901",
-        "pass": "9999",
-        "song": "654321",
-        "thumbnail": "https://i.imgur.com/ijkl789.png",
-        "category": "Medium Demon",
-        "difficulty": 4
-      },
-      {
-        "name": "The Nightmare",
-        "author": "Jax",
-        "id": "56789012",
-        "pass": "1111",
-        "song": "https://www.newgrounds.com/audio/listen/111111",
-        "thumbnail": "https://i.imgur.com/mnop012.png",
-        "category": "Easy Demon",
-        "difficulty": 2
-      }
-    ];
+    const levels = [...]; // Tu JSON aquí
 
-    // Copiar al portapapeles con alerta
     function copyToClipboard(text) {
       navigator.clipboard.writeText(text).then(() => {
         alert(`Copiado: ${text}`);
@@ -273,68 +218,45 @@
       });
     }
 
-    // Renderizar niveles en el contenedor
     function renderLevels(filterCategory = "Todos", searchTerm = "") {
       const container = document.querySelector('.content');
       container.innerHTML = '';
-
-      // Filtrar por categoría (si no es "Todos")
       let filtered = levels;
       if (filterCategory !== "Todos") {
         filtered = filtered.filter(l => l.category === filterCategory);
       }
-
-      // Filtrar por búsqueda (nombre o autor)
       if (searchTerm.trim() !== "") {
         const term = searchTerm.toLowerCase();
         filtered = filtered.filter(l =>
           l.name.toLowerCase().includes(term) || l.author.toLowerCase().includes(term)
         );
       }
-
-      // Ordenar por dificultad descendente
       filtered.sort((a, b) => b.difficulty - a.difficulty);
-
       if (filtered.length === 0) {
-        container.innerHTML = `
-          <div class="empty-state">
-            <img src="https://i.imgur.com/6Jz2xLt.png" alt="No levels found" />
-            <p>No se encontraron niveles</p>
-          </div>
-        `;
+        container.innerHTML = `<div class="empty-state"><img src="https://i.imgur.com/6Jz2xLt.png" alt="No levels found" /><p>No se encontraron niveles</p></div>`;
         return;
       }
-
-      filtered.forEach(level => {
+      filtered.forEach((level, index) => {
         const div = document.createElement('div');
         div.className = 'level';
         div.innerHTML = `
           <div class="level-info">
-            <h3>${level.name}</h3>
+            <h3>#${index + 1} ${level.name}</h3>
             <p><strong>Autor:</strong> ${level.author}</p>
             <p><strong>ID:</strong> ${level.id} <button class="copy-btn" onclick="copyToClipboard('${level.id}')">Copiar</button></p>
             <p><strong>Contraseña:</strong> ${level.pass} <button class="copy-btn" onclick="copyToClipboard('${level.pass}')">Copiar</button></p>
             <p><strong>Categoría:</strong> ${level.category}</p>
-            <p><strong>Canción:</strong> 
-              ${
-                level.song.startsWith('http') 
-                  ? `<a href="${level.song}" target="_blank" rel="noopener noreferrer">Escuchar</a>` 
-                  : `${level.song} <button class="copy-btn" onclick="copyToClipboard('${level.song}')">Copiar</button>`
-              }
-            </p>
+            <p><strong>Canción:</strong> ${level.song.startsWith('http') ? `<a href="${level.song}" target="_blank">Escuchar</a>` : `${level.song} <button class="copy-btn" onclick="copyToClipboard('${level.song}')">Copiar</button>`}</p>
           </div>
           <div class="level-thumbnail">
             <img src="${level.thumbnail}" alt="${level.name}" />
-          </div>
-        `;
+          </div>`;
         container.appendChild(div);
       });
     }
 
-    // Configurar filtros por categoría y búsqueda
     const buttons = document.querySelectorAll('.filters button');
     const searchInput = document.querySelector('.controls input');
-
     buttons.forEach(button => {
       button.addEventListener('click', () => {
         buttons.forEach(btn => btn.classList.remove('active'));
@@ -342,13 +264,10 @@
         renderLevels(button.textContent, searchInput.value);
       });
     });
-
     searchInput.addEventListener('input', () => {
       const activeButton = document.querySelector('.filters button.active');
       renderLevels(activeButton.textContent, searchInput.value);
     });
-
-    // Render inicial (todos)
     window.onload = () => {
       renderLevels();
     };
